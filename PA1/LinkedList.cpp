@@ -6,7 +6,14 @@ LinkedList::LinkedList( int maxSize ){
 
 }
        LinkedList::LinkedList( const LinkedList& other ){
-
+       		ListNode* checkNext;
+       		if(other->head == NULL){
+       			head = NULL;
+       		}
+       		else{
+       			checkNext = other.head->next;
+       			while(checkNext != NULL)
+       		}
        }
        LinkedList::~LinkedList(){
 
