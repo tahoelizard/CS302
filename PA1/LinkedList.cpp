@@ -45,7 +45,7 @@ LinkedList::LinkedList( int maxSize ){
        		size = 0;
        		if(!isEmpty()){
        			cursor = head;
-	       		while(cursor->next != NULL){
+	       		while(cursor != NULL){
 	       		    cout << "deleting " << cursor->dataItem << endl; 
 	       		      cursor = cursor->next; 
 	       			delete head;
@@ -77,7 +77,9 @@ LinkedList::LinkedList( int maxSize ){
 	       		return true;
 	       	}
 	       	else{
+                            //currently creates infinite loop
 	       		ListNode* temp = new ListNode(newDataItem, cursor);
+                            //gtp broken
 	       		goToPrior();
 	       		cursor->next = temp; 
 	       		goToNext();
@@ -244,13 +246,9 @@ LinkedList::LinkedList( int maxSize ){
        		}
        }
        bool LinkedList::goToPrior(){
-       		if (!isEmpty() && cursor != head){
-       			while (cursor->next != NULL){
-       				cursor = cursor->next; 
-       			}
-       			return true;
-       		}
-       		else{
-       			return false;
-       		}
+              ListNode *temp = cursor;
+              cursor = head; 
+              while(cursor->next != temp){
+                     cursor = cursor->next; 
+              }
        }
