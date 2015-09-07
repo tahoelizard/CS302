@@ -119,8 +119,10 @@ int  main()
                // tempTestList constructed in code block to control scope
                   { 
                    SimpleVector<char> tempVector( testVectorA );
+                   cout << "temp's size is " << tempVector.getSize() << endl;
 
                    testVectorC = tempVector;
+                   cout << "C's size is " << testVectorC.getSize() << endl;
                   }
 
                dataChanged = true;
@@ -502,7 +504,7 @@ void showData( char idLetter, const SimpleVector<char> dispVector )
    {
     int index = 0;
 
-    cout << "Vector " << idLetter << ": ";
+    cout << "Vector " << idLetter << " with a size of " <<  dispVector.getSize() <<" : ";
 
     if( dispVector.getSize() > 0 )
        {
