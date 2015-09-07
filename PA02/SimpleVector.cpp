@@ -54,6 +54,7 @@ template <class DataType>
 const SimpleVector<DataType>& SimpleVector<DataType>::operator = ( const SimpleVector<DataType> &rhVector )
 {
 	int index; 
+	vectorSize =0;
 	if(rhVector.vectorSize != 0)
 	{
 		//don't touch until it's time for refactoring out redundant code
@@ -61,8 +62,11 @@ const SimpleVector<DataType>& SimpleVector<DataType>::operator = ( const SimpleV
 		{
 			vectorData[index] = rhVector.vectorData[index];
 			incrementSize();
+			//cout << vectorSize << endl;
 		}
 	}
+
+	return *this;
 }
 
 // accessors
@@ -83,22 +87,34 @@ template <class DataType>
 DataType& SimpleVector<DataType>::operator [ ] ( int index ) throw ( logic_error )
 {
 	try{
-		return vectorData[index];
+		if (index > vectorSize || index < 0){
+			throw;
+		}
+		else{
+			return vectorData[index];
+		}
 	}
-	catch(exception& logic_error){
+	catch(logic_error){
+	}
 
-	}
+
 }
 
 template <class DataType>
 const DataType& SimpleVector<DataType>::operator [ ] ( int index ) const throw ( logic_error )
 {
 	try{
-		return vectorData[index];
+		if (index > vectorSize || index < 0){
+			throw;
+		}
+		else{
+			return vectorData[index];
+		}
 	}
-	catch(exception& logic_error){
+	catch(logic_error){
 
 	}
+
 }
 
 // modifiers
@@ -118,8 +134,7 @@ void SimpleVector<DataType>::shrink( int shrinkBy ) throw ( logic_error )
 {
 	int counter;
 	SimpleVector *temp =  new SimpleVector [vectorCapacity];
-	try{
-		if (shrinkBy < vectorSize){
+	if (shrinkBy <= vectorSize){
 			vectorSize = vectorSize - shrinkBy;
 
 			for (counter = 0; counter < vectorSize; counter++){
@@ -132,9 +147,10 @@ void SimpleVector<DataType>::shrink( int shrinkBy ) throw ( logic_error )
 			//vectorData = new SimpleVector [ vectorCapacity ];
 			//vectorData = *temp;
 
-		}
+		
 	}
-	catch(exception& logic_error){
+	else{
+		throw;
 
 	}
 }
@@ -162,7 +178,6 @@ void SimpleVector<DataType>::copyVector( DataType *dest, DataType *src )
 		for(index = 0; index < vectorSize; index++)
 		{
 			vectorData[index] = src[index];
-			//cout << "assigning " << vectorData[index] << " to " << src[index] << endl;
 		}
 	}
 }
