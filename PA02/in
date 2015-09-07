@@ -1,0 +1,29 @@
+aai a 0
+ins
+aai b 1
+ins
+aai c 2
+ins
+aai d 3
+ins
+gai 1
+aai e 4
+ins
+atb
+aai f 5
+ins
+gai 3
+aai g 6
+ins
+aai h 7
+ins
+rts
+rtc
+aai i 8
+ins
+aai j 9
+ins
+aai z 2
+aai y 3
+aai x 4
+etp
