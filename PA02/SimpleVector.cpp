@@ -86,34 +86,27 @@ int SimpleVector<DataType>::getSize() const
 template <class DataType>
 DataType& SimpleVector<DataType>::operator [ ] ( int index ) throw ( logic_error )
 {
-	try{
+
 		if (index > vectorSize || index < 0){
-			throw;
+			throw logic_error("out of range");
 		}
 		else{
 			return vectorData[index];
 		}
-	}
-	catch(logic_error){
-	}
-
 
 }
 
 template <class DataType>
 const DataType& SimpleVector<DataType>::operator [ ] ( int index ) const throw ( logic_error )
 {
-	try{
+
 		if (index > vectorSize || index < 0){
-			throw;
+			throw logic_error("out of range");
 		}
 		else{
 			return vectorData[index];
 		}
-	}
-	catch(logic_error){
 
-	}
 
 }
 
@@ -123,6 +116,19 @@ const DataType& SimpleVector<DataType>::operator [ ] ( int index ) const throw (
 template <class DataType>
 void SimpleVector<DataType>::grow( int growBy )
 {
+	DataType *temp =  new DataType [vectorCapacity];
+	if (growBy > 0)
+	{
+
+			copyVector(temp, vectorData);
+			vectorCapacity = vectorCapacity + growBy;
+			vectorData = new DataType [vectorCapacity];
+			copyVector(vectorData, temp);
+	}
+	else{
+		throw logic_error("Invalid growth");
+
+	}
 
 }
 
@@ -132,25 +138,23 @@ void SimpleVector<DataType>::grow( int growBy )
 template <class DataType>
 void SimpleVector<DataType>::shrink( int shrinkBy ) throw ( logic_error )
 {
-	int counter;
-	SimpleVector *temp =  new SimpleVector [vectorCapacity];
-	if (shrinkBy <= vectorSize){
-			vectorSize = vectorSize - shrinkBy;
+	DataType *temp =  new DataType [vectorCapacity];
+	if (vectorCapacity >= shrinkBy){
 
-			for (counter = 0; counter < vectorSize; counter++){
-				temp[counter] = vectorData [counter];
+			copyVector(temp, vectorData);
+
+			vectorCapacity = vectorCapacity - shrinkBy;
+
+			vectorData = new DataType [vectorCapacity];
+
+			if (vectorCapacity < vectorSize){
+				vectorSize = vectorCapacity;
 			}
 
-
-			//delete vectorData;
-			vectorCapacity = vectorCapacity - shrinkBy;
-			//vectorData = new SimpleVector [ vectorCapacity ];
-			//vectorData = *temp;
-
-		
+			copyVector(vectorData, temp);
 	}
 	else{
-		throw;
+		throw logic_error("out of range");
 
 	}
 }
@@ -175,9 +179,10 @@ void SimpleVector<DataType>::copyVector( DataType *dest, DataType *src )
 	int index; 
 	if(vectorSize != 0)
 	{
-		for(index = 0; index < vectorSize; index++)
+		for(index = 0; index <= vectorSize; index++)
 		{
-			vectorData[index] = src[index];
+			dest[index] = src[index];
+			//cout << "Moving " << src[index] << " to dest" << endl;
 		}
 	}
 }
