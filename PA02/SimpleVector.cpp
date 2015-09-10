@@ -20,7 +20,7 @@ SimpleVector<DataType>::SimpleVector( int newCapacity )
 }
 
 template <class DataType>
-SimpleVector<DataType>::SimpleVector( int newCapacity, const DataType &fillValue )
+SimpleVector<DataType>::SimpleVector( int newCapacity , const DataType &fillValue )
 {
 	vectorSize = 0; 
 	vectorCapacity = newCapacity;
@@ -53,19 +53,8 @@ SimpleVector<DataType>::~SimpleVector( )
 template <class DataType>
 const SimpleVector<DataType>& SimpleVector<DataType>::operator = ( const SimpleVector<DataType> &rhVector )
 {
-	int index; 
-	vectorSize =0;
-	if(rhVector.vectorSize != 0)
-	{
-		//don't touch until it's time for refactoring out redundant code
-		for(index = 0; index < rhVector.vectorSize; index++)
-		{
-			vectorData[index] = rhVector.vectorData[index];
-			incrementSize();
-			//cout << vectorSize << endl;
-		}
-	}
-
+	vectorSize = rhVector.vectorSize;
+	copyVector(vectorData, rhVector.vectorData);
 	return *this;
 }
 
@@ -86,28 +75,28 @@ int SimpleVector<DataType>::getSize() const
 template <class DataType>
 DataType& SimpleVector<DataType>::operator [ ] ( int index ) throw ( logic_error )
 {
-
-		if (index > vectorSize || index < 0){
-			throw logic_error("out of range");
-		}
-		else{
-			return vectorData[index];
-		}
+	if (index > vectorCapacity)
+	{
+		throw logic_error("out of range");
+	}
+	else
+	{
+		return vectorData[index];
+	}
 
 }
 
 template <class DataType>
 const DataType& SimpleVector<DataType>::operator [ ] ( int index ) const throw ( logic_error )
 {
-
-		if (index > vectorSize || index < 0){
-			throw logic_error("out of range");
-		}
-		else{
-			return vectorData[index];
-		}
-
-
+	if (index > vectorCapacity)
+	{
+		throw logic_error("out of range");
+	}
+	else
+	{
+		return vectorData[index];
+	}
 }
 
 // modifiers
@@ -117,18 +106,10 @@ template <class DataType>
 void SimpleVector<DataType>::grow( int growBy )
 {
 	DataType *temp =  new DataType [vectorCapacity];
-	if (growBy > 0)
-	{
-
-			copyVector(temp, vectorData);
-			vectorCapacity = vectorCapacity + growBy;
-			vectorData = new DataType [vectorCapacity];
-			copyVector(vectorData, temp);
-	}
-	else{
-		throw logic_error("Invalid growth");
-
-	}
+	copyVector(temp, vectorData);
+	vectorCapacity = vectorCapacity + growBy;
+	vectorData = new DataType [vectorCapacity];
+	copyVector(vectorData, temp);
 
 }
 
@@ -139,23 +120,20 @@ template <class DataType>
 void SimpleVector<DataType>::shrink( int shrinkBy ) throw ( logic_error )
 {
 	DataType *temp =  new DataType [vectorCapacity];
-	if (vectorCapacity >= shrinkBy){
-
-			copyVector(temp, vectorData);
-
-			vectorCapacity = vectorCapacity - shrinkBy;
-
-			vectorData = new DataType [vectorCapacity];
-
-			if (vectorCapacity < vectorSize){
-				vectorSize = vectorCapacity;
-			}
-
-			copyVector(vectorData, temp);
+	if (vectorCapacity >= shrinkBy)
+	{
+		copyVector(temp, vectorData);
+		vectorCapacity = vectorCapacity - shrinkBy;
+		vectorData = new DataType [vectorCapacity];
+		if (vectorCapacity < vectorSize)
+		{
+			vectorSize = vectorCapacity;
+		}
+		copyVector(vectorData, temp);
 	}
-	else{
+	else
+	{
 		throw logic_error("out of range");
-
 	}
 }
 
@@ -174,15 +152,11 @@ void SimpleVector<DataType>::decrementSize()
 }
 
 template <class DataType>
-void SimpleVector<DataType>::copyVector( DataType *dest, DataType *src )
+void SimpleVector<DataType>::copyVector( DataType *dest , DataType *src )
 {
 	int index; 
-	if(vectorSize != 0)
+	for(index = 0; index <= vectorSize; index++)
 	{
-		for(index = 0; index <= vectorSize; index++)
-		{
-			dest[index] = src[index];
-			//cout << "Moving " << src[index] << " to dest" << endl;
-		}
+		dest[index] = src[index];
 	}
 }
