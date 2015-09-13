@@ -1,0 +1,16 @@
+When you pass this class, you will be going on to CS 446, where you will be required to create an Operating System (OS) simulator
+Some of the possible conditions an OS must support are the prioritized processor scheduling operations that may occur during normal operations
+Your task will be to create a Priority Queue (PQ) class that can help manage the processor scheduling
+The items must go into the queue with their priority set so when they are dequeued, they come out in a sequence demonstrating both their priority and their entry time into the queue
+In other words, if three items go into the queue with priority 1 (the highest), they will be dequeued first, but in the order in which they were enqueued (i.e., FIFO)
+One of the conditions of this particular PQ is that there is a choice of priority ranges; the default is 1 (highest) to 5 (lowest), but the class can be instantiated with as many priorities as desired. Windows, for example, has used a 32 level priority system (although it is backwards with respect to the system specified here; 31 is the highest priority and 0 is the lowest)
+Another capability of this PQ is that it manages its own size. If, at a point prior to enqueuing, the priority list needs more memory, the capacity of the vector is doubled from its present capacity; if, at a point after dequeuing, the priority list size is found to be smaller than 1/4 the present capacity, the capacity is reduced by a factor of two
+You are given the driver file in the Submit system. Your task is to implement all methods used in the driver file, and prepare all your files for testing; here are the supporting notes:
+You must create this PQ class as one that uses the SimpleVector class created for PA02
+The SimpleVector code will appear below this assignment on Thursday morning
+Note that you will only be able to see the public methods in the driver file; there may still be opportunities to create private member methods that support the operations; this will be up to you
+Also note that you will be provided a header and implementation file for the DataType that will be used in your templated class; DataType will be comprised of an integer and a c-string, and an initialization constructor
+There are also three conditions that should throw exceptions (in addition to the conditions in the SimpleVector class):
+If an attempt is made to enqueue with a priority out of present object's range
+If an attempt is made to dequeue from an empty queue
+If an attempt it made to peek at the front item of an empty queue
