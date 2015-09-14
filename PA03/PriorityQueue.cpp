@@ -45,38 +45,54 @@ PriorityQueue<DataType>::PriorityQueue()
 template <class DataType>
 PriorityQueue<DataType>::~PriorityQueue( )
 {
-	//delete head; broken
-	head = NULL;
+	if (head != NULL){
+		delete head;
+		head = NULL;
+	}
 }
 
 template <class DataType>
-bool PriorityQueue<DataType>::isEmpty()
+const bool PriorityQueue<DataType>::isEmpty()
 {
-    if(head == NULL){
+
+    if(head == NULL || head->getSize() == 0){
     	return true;
     }
     else{
     	return false;
+
     }
 }
+template <class DataType>
+    const PriorityQueue<DataType>& PriorityQueue<DataType>::operator = ( const PriorityQueue<DataType> &rhPQueue ){
+
+    		//head->grow(rhPQueue.getCapacity());
+    		//for (int i = 0; i < head->getCapacity(); i++){
+    			head = rhPQueue.head;
+
+    }
 
 template <class DataType>
 void PriorityQueue<DataType>::dequeue(DataType& data)
 {
-
-
-
-	if(!isEmpty()){
+	if(!isEmpty())
+	{
 
 		data.priority = (*head)[0].priority;
 		strcpy(data.process, (*head)[0].process);
 
-		for(int i = 0; i < head->getSize(); i++){
+		for(int i = 0; i < head->getSize(); i++)
+		{
 			(*head)[i].priority = (*head)[i+1].priority;
 			strcpy( (*head)[i].process, (*head)[i+1].process );
 		}
 
 		head->decrementSize();
+
+		if( head->getSize() < (.25*head->getCapacity()))
+		{
+			head->shrink(head->getCapacity()/2);
+		}
 	}
 	
 
@@ -85,21 +101,47 @@ void PriorityQueue<DataType>::dequeue(DataType& data)
 template <class DataType>
 void PriorityQueue<DataType>::enqueue (int newPri, char* newPro)
 {
-		int counter = 0;
+	int placeHolder;
+	int counter = 0;
 	if(isEmpty()){
     	head = new SimpleVector<DataType>; 
+    	(*head)[0].priority = newPri;
+    	strcpy((*head)[0].process, newPro);
+    	head->incrementSize();
     }
 
-   (*head)[head->getSize()].priority = newPri;
+else{
 
-   strcpy((*head)[head->getSize()].process, newPro);
-
-
-    head->incrementSize();
-
-    if(head->getSize() >= head->getCapacity()){
-    	head->grow(1);
+	 	//give wiggle room 
+    if(head->getSize() >= head->getCapacity())
+    {
+    	head->grow(head->getCapacity());
     }
+
+	placeHolder = head->getSize(); 
+	//search for place
+    while((*head)[counter].priority <= newPri && counter < head->getSize())
+    {
+   		counter++;
+    }
+
+ 	head->incrementSize();
+
+ 	//shuffle down
+ 	while(placeHolder > counter)
+ 	{
+ 		strcpy((*head)[placeHolder].process, (*head)[placeHolder-1].process);
+		(*head)[placeHolder].priority = (*head)[placeHolder-1].priority;
+ 		placeHolder--;
+ 	}
+
+ 	//put new value in
+ 	(*head)[counter].priority = newPri;
+    strcpy((*head)[counter].process, newPro);
+}
+
+	
+
 }
 
 template <class DataType>
@@ -117,7 +159,7 @@ template <class DataType>
 void PriorityQueue<DataType>::showStructure(char name)
 {
 	if(!isEmpty()){
-		cout << name << " (" << head->getSize() << "/" <<head->getCapacity() << "): ";
+		cout << "  List " << name << " (" << head->getSize() << "/" <<head->getCapacity() << "): ";
 		for (int i = 0; i < head->getSize(); i++){
 			cout << "[";
 			cout << (*head)[i].priority << "/";
@@ -127,7 +169,7 @@ void PriorityQueue<DataType>::showStructure(char name)
 		cout << endl;
 	}
 	else{
-		cout << "Empty list" << endl;
+		cout << "  Empty list" << endl;
 	}
 }
 
