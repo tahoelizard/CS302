@@ -21,6 +21,7 @@
 // Header files ///////////////////////////////////////////////////////////////
 
 #include <stdexcept>
+#include "SimpleVector.h"
 
 using namespace std;
 
@@ -32,17 +33,19 @@ class PriorityQueue
     public:
     // constructors
     PriorityQueue();
-    bool isEmpty();
-    void dequeue(DataType);
+    const bool isEmpty();
+    void dequeue(DataType& data);
     void enqueue (int,  char* newPro);
     void peekAtFront(DataType&);
     void showStructure(char);
     // destructor
     ~PriorityQueue( );
 
+    const PriorityQueue &operator = ( const PriorityQueue &rhPQueue );
+
   private:
-  	DataType* head; 
-  	DataType* rear;
+  	SimpleVector<DataType>* head;
+  	int rear;
    };
 
 // Terminating precompiler directives  ////////////////////////////////////////
