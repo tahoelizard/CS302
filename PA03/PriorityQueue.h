@@ -41,7 +41,7 @@ class PriorityQueue
     // destructor
     ~PriorityQueue( );
 
-    const PriorityQueue &operator = ( const PriorityQueue &rhPQueue );
+    PriorityQueue &operator = (PriorityQueue rhPQueue );
 
   private:
   	SimpleVector<DataType>* head;
