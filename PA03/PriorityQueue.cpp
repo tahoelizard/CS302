@@ -46,7 +46,7 @@ template <class DataType>
 PriorityQueue<DataType>::~PriorityQueue( )
 {
 	if (head != NULL){
-		delete head;
+		//delete head;
 		head = NULL;
 	}
 }
@@ -64,12 +64,13 @@ const bool PriorityQueue<DataType>::isEmpty()
     }
 }
 template <class DataType>
-    const PriorityQueue<DataType>& PriorityQueue<DataType>::operator = ( const PriorityQueue<DataType> &rhPQueue ){
-
-    		//head->grow(rhPQueue.getCapacity());
-    		//for (int i = 0; i < head->getCapacity(); i++){
-    			head = rhPQueue.head;
-
+    PriorityQueue<DataType>& PriorityQueue<DataType>::operator = (PriorityQueue<DataType> rhPQueue )
+    {
+    	if(head == NULL ){
+    		head = new SimpleVector<DataType>;
+    	}
+    	*head = (*rhPQueue.head);
+    	    	return *this;
     }
 
 template <class DataType>
