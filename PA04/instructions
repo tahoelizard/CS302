@@ -1,0 +1,26 @@
+You are given some file(s) in the Submit system, as follows:
+DateType.h & DateType.cpp - stand alone data type for managing dates in a specified form (data is a c-string)
+SimpleVector.h & SimpleVector.cpp - slightly modified from the previous assignment to make data access easier
+SorterClass.h & SorterClass.cpp - a class derived from SimpleVector which offers an interface format for generating new sorting classes
+Your task will be to create a new class called TestSorter which will be derived from the SorterClass, as follows:
+While the the SimpleVector and SorterClass are templated classes, the TestSorter class specifically uses the DateClass data type and is not templated
+The virtual method sort is to be overridden using your choice of sorting algorithms
+However, you must override and use compareTo as needed for the decision-making action(s) in your sort algorithm
+You are strongly urged to create as many supporting methods as needed for the sorting operation; make sure your code is modular and not repeated
+You must sort the dates as they are found in the DateType data, and as shown in the input data sets; you may not store the dates in any other format except at the point of sorting (i.e., you may change the data format while implementing compareTo)
+In addition, you may not use any external string management tools (e.g., strcpy, strcat, strcmp, etc.); you must create your own as needed
+In addition, you are also given the SimpleTimer.h and SimpleTimer.cpp files; this is a timer that is accurate to one millionth of a second (at least that is what is advertised)
+Use of this timer is not necessary for this assignment; however, you need to become familiar with it and practice using it in your test files (and then remove it before testing and submitting your code)
+You will be using this timer much more next week but given the assignment this week, there is an opportunity for you to try it out
+You are also invited to create more than one derived sorting test class; they are easy to do thanks to the inheritance process; you may want to derive two or three classes with different sorting methods and time them
+In this case, you are given a driver program to help you test your work; however, you should practice testing your work on your own, with or without the given driver
+Your programming work will be uploaded to the submission system at https://www.cse.unr.edu/submit in PA04
+Other work, specified below, will be uploaded to this (WebCampus) assignment system
+This includes your journal, which must respond to the following questions:
+What worked well for this assignment
+What did not work well for this assignment
+What did you need help with on this assignment
+What did you learn from this assignment
+It also includes a PDF document with your Doxygen documentation
+In every situation, you will have a checklist of your assignment responsibilities each week
+Note that, unless otherwise specified, only one submission will be allowed for either the programming materials or the journal
