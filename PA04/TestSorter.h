@@ -41,6 +41,8 @@ class TestSorter: public SimpleVector<DateType>
 
     private:
       int toNumber(int index);
+      int quantifyMonth(int index);
+      void swapDates(int firstIndex, int secondIndex);
    };
 
 #endif // ifndef TESTSORTER_H
