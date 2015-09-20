@@ -75,68 +75,36 @@ bool TestSorter::sort()
   int firstDate, secondDate; 
   int firstMonth, secondMonth;
 
-  
-
-
-
-
 for(index = 0; index < SimpleVector::getSize(); index++){
 
 
   for(curIndex = 0; curIndex < SimpleVector::getSize()-1; curIndex++){
     firstMonth = quantifyMonth(curIndex);
     secondMonth = quantifyMonth(curIndex +1);
-    if(firstMonth > secondMonth)
+    if(compareTo(curIndex, curIndex+1))
       {
         swapDates(curIndex, curIndex+1);
-        cout << "swapped " <<  quantifyMonth(curIndex) << " with " <<  quantifyMonth(curIndex+1) << endl;
+        //cout << "swapped " <<  quantifyMonth(curIndex) << " with " <<  quantifyMonth(curIndex+1) << endl;
       }
 
-
+      /*
+      firstDate = toNumber(curIndex);
+      secondDate = toNumber(curIndex+1);
+      if(firstDate > secondDate)
+      {
+        swapDates(curIndex, curIndex+1);
+        cout << "swapped " << toNumber(curIndex) << " with " << toNumber(curIndex+1) << endl;
+      }
+      */
     }
-    cout << "ROUND DONE" << endl;
+    //cout << "ROUND DONE" << endl;
   }
-  curIndex = 0;
-  for (int i = 1; i < 13; i++){
-    while (quantifyMonth(curIndex+1) == i){  
-        firstDate = toNumber(curIndex);
-        secondDate = toNumber(curIndex+1);
-        if(firstDate > secondDate)
-        {
-          swapDates(curIndex, curIndex+1);
-          cout << "swapped " << toNumber(curIndex) << " with " << toNumber(curIndex+1) << endl;
-        }
-        curIndex++;
-    }
-  }
-  
   return true;
 }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-int TestSorter::toNumber(int index)
+int TestSorter::dateToNumber(int index)
 {
     DateType hold;
     int result;
@@ -148,6 +116,30 @@ int TestSorter::toNumber(int index)
       result = result * 10;
       result = result + (hold.date[1] - 48);
    }
+    return result;
+}
+
+int TestSorter::yearToNumber(int index){
+   DateType hold;
+    int result;
+    int findIndex = 0;
+    getValueAt( index, hold );
+    while (hold.date[findIndex] != ' ')
+    { 
+      findIndex++; 
+    }
+    findIndex++; 
+    while (hold.date[findIndex] != ' ')
+    { 
+      findIndex++; 
+    }
+    findIndex++; 
+
+    result = (hold.date[findIndex]-48) *1000;
+    result = result + ((hold.date[findIndex+1]-48) * 100);
+    result = result + ((hold.date[findIndex+2]-48) * 10);
+    result = result + (hold.date[findIndex+3]-48);
+
     return result;
 }
 
@@ -223,6 +215,41 @@ void TestSorter::swapDates(int firstIndex, int secondIndex){
   getValueAt( secondIndex, holdSecond ); 
   setValueAt(firstIndex, holdSecond);
   setValueAt(secondIndex, holdFirst);
+}
+
+bool TestSorter::compareTo(int firstIndex, int secondIndex){
+  bool isGreater;
+  if(yearToNumber(firstIndex) > yearToNumber(secondIndex))
+  {
+    isGreater = true;
+  }
+  else if(yearToNumber(firstIndex) < yearToNumber(secondIndex))
+  {
+    isGreater = false;
+  }
+  else
+  {
+    if(quantifyMonth(firstIndex)> quantifyMonth(secondIndex))
+    {
+      isGreater = true;
+    }
+    else if (quantifyMonth(firstIndex) < quantifyMonth(secondIndex))
+    {
+      isGreater = false;
+    }
+    else
+    {
+      if(dateToNumber(firstIndex)> dateToNumber(secondIndex))
+      {
+        isGreater = true;
+      }
+      else
+      {
+        isGreater = false;
+      }
+    }
+  }
+  return isGreater;
 }
 
 #endif // ifndef TESTSORTER_CPP
