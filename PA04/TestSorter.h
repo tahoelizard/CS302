@@ -40,9 +40,12 @@ class TestSorter: public SimpleVector<DateType>
       bool sort();
 
     private:
-      int toNumber(int index);
+      int dateToNumber(int index);
+      int yearToNumber(int index);
       int quantifyMonth(int index);
       void swapDates(int firstIndex, int secondIndex);
+      bool compareTo(int firstIndex, int secondIndex);
+
    };
 
 #endif // ifndef TESTSORTER_H
