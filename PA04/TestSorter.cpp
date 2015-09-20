@@ -70,18 +70,29 @@ bool TestSorter::add(char* newDate)
 
 bool TestSorter::sort()
 {
-  int index = 1; 
+  int index = 0; 
+  int curIndex = 0; 
   int firstDate, secondDate; 
   int firstMonth, secondMonth;
-  swapDates(0, 1);
 
-  while(index < SimpleVector::getSize()){
+  
 
-    firstDate  = toNumber(index);
-    firstMonth = quantifyMonth(index);
-    cout << firstDate << endl; 
-    index++;
-    
+
+
+
+for(index = 0; index < SimpleVector::getSize(); index++){
+
+
+  for(curIndex = 0; curIndex < SimpleVector::getSize()-1; curIndex++){
+      firstDate = toNumber(curIndex);
+      secondDate = toNumber(curIndex+1);
+      if(firstDate > secondDate)
+      {
+        swapDates(curIndex, curIndex+1);
+        cout << "swapped " << toNumber(curIndex) << " with " << toNumber(curIndex+1) << endl;
+      }
+    }
+    cout << "ROUND DONE" << endl;
   }
   return true;
 }
