@@ -92,18 +92,24 @@ for(index = 0; index < SimpleVector::getSize(); index++){
         cout << "swapped " <<  quantifyMonth(curIndex) << " with " <<  quantifyMonth(curIndex+1) << endl;
       }
 
-      /*
-      firstDate = toNumber(curIndex);
-      secondDate = toNumber(curIndex+1);
-      if(firstDate > secondDate)
-      {
-        swapDates(curIndex, curIndex+1);
-        cout << "swapped " << toNumber(curIndex) << " with " << toNumber(curIndex+1) << endl;
-      }
-      */
+
     }
     cout << "ROUND DONE" << endl;
   }
+  curIndex = 0;
+  for (int i = 1; i < 13; i++){
+    while (quantifyMonth(curIndex+1) == i){  
+        firstDate = toNumber(curIndex);
+        secondDate = toNumber(curIndex+1);
+        if(firstDate > secondDate)
+        {
+          swapDates(curIndex, curIndex+1);
+          cout << "swapped " << toNumber(curIndex) << " with " << toNumber(curIndex+1) << endl;
+        }
+        curIndex++;
+    }
+  }
+  
   return true;
 }
 
