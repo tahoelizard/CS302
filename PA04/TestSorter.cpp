@@ -84,6 +84,15 @@ for(index = 0; index < SimpleVector::getSize(); index++){
 
 
   for(curIndex = 0; curIndex < SimpleVector::getSize()-1; curIndex++){
+    firstMonth = quantifyMonth(curIndex);
+    secondMonth = quantifyMonth(curIndex +1);
+    if(firstMonth > secondMonth)
+      {
+        swapDates(curIndex, curIndex+1);
+        cout << "swapped " <<  quantifyMonth(curIndex) << " with " <<  quantifyMonth(curIndex+1) << endl;
+      }
+
+      /*
       firstDate = toNumber(curIndex);
       secondDate = toNumber(curIndex+1);
       if(firstDate > secondDate)
@@ -91,6 +100,7 @@ for(index = 0; index < SimpleVector::getSize(); index++){
         swapDates(curIndex, curIndex+1);
         cout << "swapped " << toNumber(curIndex) << " with " << toNumber(curIndex+1) << endl;
       }
+      */
     }
     cout << "ROUND DONE" << endl;
   }
@@ -161,10 +171,10 @@ int TestSorter::quantifyMonth(int index)
       }
     }
   break;
-  case 'f':
+  case 'f': case 'F':
     result = 2; 
   break;
-  case 'm':
+  case 'm': case 'M':
     if (hold.date[findIndex+2] == 'r' || hold.date[findIndex+2] == 'R'){
       result = 3;
     }
@@ -172,7 +182,7 @@ int TestSorter::quantifyMonth(int index)
       result = 5;
     }
   break;
-  case 'a':
+  case 'a': case 'A':
       if (hold.date[findIndex+1] == 'p' || hold.date[findIndex+1] == 'P'){
       result = 4;
     }
@@ -180,16 +190,16 @@ int TestSorter::quantifyMonth(int index)
       result = 8;
     }
   break;
-  case 's':
+  case 's': case 'S':
     result = 9;
   break;
-  case 'o':
+  case 'o': case 'O':
     result = 10;
   break;
-  case 'n':
+  case 'n': case 'N':
     result = 11;
   break;
-  case 'd':
+  case 'd': case 'D':
     result = 12;
   break;
 default:
