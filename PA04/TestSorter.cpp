@@ -72,32 +72,18 @@ bool TestSorter::sort()
 {
   int index = 0; 
   int curIndex = 0; 
-  int firstDate, secondDate; 
-  int firstMonth, secondMonth;
 
-for(index = 0; index < SimpleVector::getSize(); index++){
+  for(index = 0; index < SimpleVector::getSize(); index++){
 
 
   for(curIndex = 0; curIndex < SimpleVector::getSize()-1; curIndex++){
-    firstMonth = quantifyMonth(curIndex);
-    secondMonth = quantifyMonth(curIndex +1);
+
     if(compareTo(curIndex, curIndex+1))
       {
         swapDates(curIndex, curIndex+1);
         //cout << "swapped " <<  quantifyMonth(curIndex) << " with " <<  quantifyMonth(curIndex+1) << endl;
       }
-
-      /*
-      firstDate = toNumber(curIndex);
-      secondDate = toNumber(curIndex+1);
-      if(firstDate > secondDate)
-      {
-        swapDates(curIndex, curIndex+1);
-        cout << "swapped " << toNumber(curIndex) << " with " << toNumber(curIndex+1) << endl;
-      }
-      */
     }
-    //cout << "ROUND DONE" << endl;
   }
   return true;
 }
@@ -250,6 +236,21 @@ bool TestSorter::compareTo(int firstIndex, int secondIndex){
     }
   }
   return isGreater;
+}
+
+bool TestSorter::validDate(int index){
+  if(quantifyMonth(index) != 0 &&
+    yearToNumber(index) > 1 &&
+    yearToNumber(index) < 3000 &&
+    dateToNumber(index) > 0 && 
+    dateToNumber(index) <32)
+  {
+    return true;
+  }
+  else{
+    return false; 
+  }
+
 }
 
 #endif // ifndef TESTSORTER_CPP
