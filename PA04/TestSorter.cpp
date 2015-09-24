@@ -27,14 +27,29 @@
    #include "SimpleVector.cpp"
  #include <iostream>
 
+// Global constant definitioans  //////////////////////////////////////////////
+char UPA = 'A';
+char LOWA = 'a';
+int MONTHLEN = 3; 
+char MONTHS[12][4] = {"JAN","FEB","MAR","APR","MAY","JUN",
+                      "JUL","AUG","SEP","OCT","NOV","DEC"};
+int MONTHLIMIT = 13; 
+int DATEMAX = 32; 
+int DATEMIN = 0;
+int YEARMIN =1;
+int YEARMAX = 3000;
+char ZEROCHAR = '0';
+int YEARLEN = 4;
+
+
 TestSorter::TestSorter()
 {
-  //wut
+  //called through base class
 }
 
 TestSorter::~TestSorter()
 {
-  //implied?
+  //called through base class
 }
 
 void TestSorter::getValueAt(int value, DateType& valFound )const
@@ -49,24 +64,17 @@ void TestSorter::getValueAt(int value, DateType& valFound )const
 
 bool TestSorter::add(char* newDate)
 {
+  bool returnVal = true;
+
   SimpleVector::setValueAt( getSize(), newDate );
   SimpleVector::incrementSize();
+
   if(SimpleVector::getSize() == SimpleVector::getCapacity())
   {
     SimpleVector::grow(getSize());
   }
+  return returnVal;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 bool TestSorter::sort()
 {
@@ -90,8 +98,6 @@ bool TestSorter::sort()
   }
   return true;
 }
-
-
 
 int TestSorter::dateToNumber(const DateType &check)
 {
@@ -131,70 +137,68 @@ int TestSorter::yearToNumber(const DateType &check){
 
 int TestSorter::quantifyMonth(const DateType &check)
 {
-  int result = 0;
+  char dummy[MONTHLEN]; 
   int findIndex = 0;
+  bool match = false;
+  int i;
+
   while (check.date[findIndex] != ' ')
   {
     findIndex++; 
   }
   findIndex++; 
 
-  switch ( check.date[findIndex] ) {
-  case 'j': case 'J':
-    if (check.date[findIndex+1] == 'a' || check.date[findIndex+1] == 'A'){
-      result = 1;
-    }
-    else if(check.date[findIndex+1] == 'u' || check.date[findIndex+1] == 'U'){
-      if(check.date[findIndex+2] == 'n' || check.date[findIndex+2] == 'N'){
-        result = 6;
-      }
-      else{
-        result = 7;
-      }
-    }
-  break;
-  case 'f': case 'F':
-    result = 2; 
-  break;
-  case 'm': case 'M':
-    if (check.date[findIndex+2] == 'r' || check.date[findIndex+2] == 'R'){
-      result = 3;
+  //make dummy 
+  for(int i = 0; i < 3; i++)
+  {
+    dummy[i] = check.date[findIndex+i];
+  }
+  toUpper(dummy);
+
+  i = 0;
+
+  while (!match && i < MONTHLIMIT)
+  {
+    match = isMonth(dummy, i);
+    if (match){
+      //cout << "found month!" << endl;
     }
     else{
-      result = 5;
+      //cout << "not month!" << endl;
     }
-  break;
-  case 'a': case 'A':
-      if (check.date[findIndex+1] == 'p' || check.date[findIndex+1] == 'P'){
-      result = 4;
-    }
-    else{
-      result = 8;
-    }
-  break;
-  case 's': case 'S':
-    result = 9;
-  break;
-  case 'o': case 'O':
-    result = 10;
-  break;
-  case 'n': case 'N':
-    result = 11;
-  break;
-  case 'd': case 'D':
-    result = 12;
-  break;
-default:
-    result = 0;
-  break;
+    
+    i++;
+  }
+
+  return i; 
 }
 
-  return result;
+bool TestSorter::isMonth(char* source, int monthIndex){
+  bool check = false;
+  int index = 0; 
+  if(source[0] == MONTHS[monthIndex][0]
+    && source[1] == MONTHS[monthIndex][1]
+    && source[2] == MONTHS[monthIndex][2])
+  {
+    check = true; 
+  }
+  return check; 
 }
 
-void TestSorter::swapDates(int firstIndex, int secondIndex){
+void TestSorter::toUpper(char* needsUp)
+{
+  for(int i = 0; i < MONTHLEN; i++){
+    if(needsUp[i] <= 'z' && needsUp[i] >= LOWA){
+      needsUp[i] =  needsUp[i]  - LOWA + UPA; 
+    }  
+  }
+}
+
+void TestSorter::swapDates(int firstIndex, int secondIndex)
+{
   DateType holdFirst;
   DateType holdSecond; 
+  //cout << "swapping" << endl;
   getValueAt( firstIndex, holdFirst );
   getValueAt( secondIndex, holdSecond ); 
   setValueAt(firstIndex, holdSecond);
@@ -203,6 +207,8 @@ void TestSorter::swapDates(int firstIndex, int secondIndex){
 
 int TestSorter::compareTo( const DateType &lhObject, const DateType &rhObject){ 
   int isGreater;
+  //cout << "compare calling" <<endl;
+  //cout << yearToNumber(lhObject)  << " and " << yearToNumber(rhObject) << endl;
   if(yearToNumber(lhObject) > yearToNumber(rhObject))
   {
     isGreater = 1;
@@ -223,15 +229,20 @@ int TestSorter::compareTo( const DateType &lhObject, const DateType &rhObject){
     }
     else
     {
+      //cout << "comparing "<< dateToNumber(lhObject) << " to " << dateToNumber(rhObject) << endl;
       if(dateToNumber(lhObject)> dateToNumber(rhObject))
       {
+        //cout << dateToNumber(lhObject) << " is bigger" << endl;
         isGreater = 1;
       }
       else if (dateToNumber(lhObject)< dateToNumber(rhObject))
       {
+        //cout << dateToNumber(rhObject) << " is bigger" << endl;
         isGreater = -1;
       }
-      else{
+      else
+      {
+        //cout << "they equal" << endl; 
         isGreater = 0;
       }
     }
@@ -239,21 +250,23 @@ int TestSorter::compareTo( const DateType &lhObject, const DateType &rhObject){
   return isGreater;
 }
 
-bool TestSorter::validDate(int index){
+bool TestSorter::validDate(int index)
+{
   DateType hold;
   getValueAt(index,hold);
-  if(quantifyMonth(hold) != 0 &&
-    yearToNumber(hold) > 1 &&
-    yearToNumber(hold) < 3000 &&
-    dateToNumber(hold) > 0 && 
-    dateToNumber(hold) <32)
+  //cout << "validate calling" <<endl;
+  if(quantifyMonth(hold) != DATEMIN &&
+    yearToNumber(hold) > YEARMIN &&
+    yearToNumber(hold) < YEARMAX &&
+    dateToNumber(hold) > DATEMIN && 
+    dateToNumber(hold) <DATEMAX)
   {
     return true;
   }
-  else{
+  else
+  {
     return false; 
   }
-
 }
 
 #endif // ifndef TESTSORTER_CPP
