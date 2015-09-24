@@ -44,9 +44,10 @@ class TestSorter: public SimpleVector<DateType>
       int yearToNumber(const DateType &check);
       int quantifyMonth(const DateType &check);
       void swapDates(int firstIndex, int secondIndex);
-      //bool compareTo(int firstIndex, int secondIndex);
       int compareTo( const DateType &lhObject, const DateType &rhObject); 
       bool validDate(int index);
+      void toUpper(char* needsUp);
+      bool isMonth(char*source, int monthIndex);
 
    };
 
