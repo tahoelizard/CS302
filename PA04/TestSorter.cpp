@@ -202,10 +202,10 @@ int TestSorter::yearToNumber(const DateType &check){
     }
     findIndex++; 
 
-    result = (check.date[findIndex]-48) *1000;
-    result = result + ((check.date[findIndex+1]-48) * 100);
-    result = result + ((check.date[findIndex+2]-48) * 10);
-    result = result + (check.date[findIndex+3]-48);
+    result = (check.date[findIndex]-ZEROCHAR) *1000;
+    result = result + ((check.date[findIndex+1]-ZEROCHAR) * 100);
+    result = result + ((check.date[findIndex+2]-ZEROCHAR) * 10);
+    result = result + (check.date[findIndex+3]-ZEROCHAR);
 
     return result;
 }
