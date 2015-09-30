@@ -135,18 +135,15 @@ return makeDate( lhObject.date ) - makeDate( rhObject.date );
    }
 
 /**
- * @brief Sorting operation
+ * @brief Sorting shell
  *
- * @details Virtual sort method that is overridden
- *          to use various sorting strategies
+ * @details Calls the mergeSort function
  *          
  * @param in: None
  *
  * @note Derived methods use specific strategy to sort objects
  * @note Sets sort success flag to true at start;
- *       supporting operations used to create dates, months, years
- *       will set the flag to false if there is an incorrect date;
- *       method returns success flag
+ *       calls the mergeSort function
  */
 bool MrgSorter::sort
        (
@@ -159,7 +156,17 @@ bool MrgSorter::sort
 
     return sortSuccess;
    }
-
+/**
+ * @brief Merge Sorting operation
+ *
+ * @details Uses the merge sort algorithm to sort the data in place
+ *          
+ * @param in: int high
+ * @param in: int low
+ *
+ * @note Relies on helper function to merge the data
+ * @note Called recursively until the data is all sorted
+ */
 void MrgSorter::mergesort
         ( 
           int low, 
@@ -175,7 +182,18 @@ void MrgSorter::mergesort
       merge(low,high,mid);
   }
 }
-
+/**
+ * @brief Merge sorting helper
+ *
+ * @details Combines data in order
+ *          
+ * @param in: int low
+ * @param in: int mid
+ * @param in: int high
+ *
+ * @note Relies on compareTo to see if values should be swapped
+ * @note Called recursively until the data is all sorted
+ */
 void MrgSorter::merge
         (
           int low, 
