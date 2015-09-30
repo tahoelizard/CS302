@@ -25,6 +25,8 @@
 #include "QkSorter.h"
 #include "SorterClass.cpp"
 #include "SimpleVector.cpp"
+  #include <iostream>
+using namespace std;
 
 /**
  * @brief Default constructor
@@ -151,36 +153,64 @@ bool QkSorter::sort
         // no parameters
        )
    {
-    int lowestIndex, innerIndex, outerIndex = 0;
-    DateType innerDate, outerDate, lowestDate;
-
     sortSuccess = true;
 
-    while( outerIndex < getSize() - 1 && sortSuccess )
-       {
-        lowestIndex = outerIndex;
-        innerIndex = outerIndex + 1;
-
-        while( innerIndex < getSize() && sortSuccess )
-           {
-            getValueAt( innerIndex, innerDate );
-            getValueAt( lowestIndex, lowestDate );
-
-            if( compareTo( innerDate, lowestDate ) < 0 )
-               {
-                lowestIndex = innerIndex;
-               }
-
-            innerIndex++;
-           }
-
-        swap( outerIndex, lowestIndex );
-
-        outerIndex++;
-       }
-
+    quickSort(0, getSize()-1);
     return sortSuccess;
    }
+
+   void QkSorter::quickSort(int left, int right) {
+      int i = left, j = right;
+      DateType pivot;
+      getValueAt((left + (right - left) / 2), pivot);
+      cout << pivot << endl;
+      DateType hold;
+      DateType hold2;
+      /* partition */
+      while (i <= j) {
+
+            getValueAt(i, hold);
+            while (compareTo(hold, pivot) < 0)
+            {
+              cout << "comparing " << pivot << " to " << hold << endl;
+              cout << "moving i" << endl;
+              i++;
+              getValueAt(i, hold);
+            }
+            cout << "I IS " << i << " AND J IS " << j << endl;
+                  
+            getValueAt(j, hold);
+            while (compareTo(hold, pivot) > 0){
+                cout << "comparing " << pivot << " to " << hold << endl;
+                j--;  
+                cout << "moving j" << endl;
+                 getValueAt(j, hold);
+            }  
+            cout << "I IS " << i << " AND J IS " << j << endl;
+            if (i <= j) {
+              cout << "swapping" << endl;
+                   getValueAt(i, hold);
+                    getValueAt(j, hold2);
+                    setValueAt(i, hold2);
+                    setValueAt(j, hold);
+                  i++;
+                  j--;
+            }
+      }
+ cout << "=============================================" << endl;
+      /* recursion */
+      if (left < j)
+      {
+        cout << "B";
+          quickSort(left, j);  
+      }
+            
+      if (i < right){
+        cout << "C";
+          quickSort(i, right);  
+      }
+            
+}
 
 /**
  * @brief Swaps date types
