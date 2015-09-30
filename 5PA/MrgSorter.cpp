@@ -183,53 +183,53 @@ void MrgSorter::merge
           int mid
         )
 {
-  int i, j, k;
+  int lhIndex, rhIndex, allIndex;
   DateType hold, hold2; 
   SimpleVector* c;
   c = new SimpleVector(high+1);
-  i = low;
-  k = low;
-  j = mid + 1;
+  lhIndex = low;
+  allIndex = low;
+  rhIndex = mid + 1;
 
-  while (i <= mid && j <= high)
+  while (lhIndex <= mid && rhIndex <= high)
   {
-    getValueAt(i, hold);
-    getValueAt(j,hold2);
+    getValueAt(lhIndex, hold);
+    getValueAt(rhIndex,hold2);
 
     if (compareTo(hold,hold2) < 0)
     {
-        c->setValueAt(k, hold);
-        k++;
-        i++;
+        c->setValueAt(allIndex, hold);
+        allIndex++;
+        lhIndex++;
     }
     else
     {
-      c->setValueAt(k, hold2);
-      k++;
-      j++;
+      c->setValueAt(allIndex, hold2);
+      allIndex++;
+      rhIndex++;
     }
   }
 
-  while (i <= mid)
+  while (lhIndex <= mid)
   {
-    getValueAt(i, hold);
-    c->setValueAt(k, hold);
-    k++;
-    i++;
+    getValueAt(lhIndex, hold);
+    c->setValueAt(allIndex, hold);
+    allIndex++;
+    lhIndex++;
   }
 
-  while (j <= high)
+  while (rhIndex <= high)
   {
-    getValueAt(j, hold);
-    c->setValueAt(k, hold);
-    k++;
-    j++;
+    getValueAt(rhIndex, hold);
+    c->setValueAt(allIndex, hold);
+    allIndex++;
+    rhIndex++;
   }
 
-  for (i = low; i < k; i++)
+  for (lhIndex = low; lhIndex < allIndex; lhIndex++)
   {
-    c->getValueAt(i, hold);
-    setValueAt(i, hold);
+    c->getValueAt(lhIndex, hold);
+    setValueAt(lhIndex, hold);
   }
 }
 

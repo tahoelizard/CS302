@@ -164,48 +164,45 @@ void QkSorter::quickSort
     int right
   ) 
 {
-  int i = left, j = right;
+  int lhIndex = left, rhIndex = right;
   DateType pivot;
   getValueAt((left + (right - left) / 2), pivot);
   DateType hold;
   DateType hold2;
   /* partition */
-  while (i <= j) 
+  while (lhIndex <= rhIndex) 
   {
-    getValueAt(i, hold);
+    getValueAt(lhIndex, hold);
     while (compareTo(hold, pivot) < 0)
     {
-      i++;
-      getValueAt(i, hold);
+      lhIndex++;
+      getValueAt(lhIndex, hold);
     }
           
-    getValueAt(j, hold);
+    getValueAt(rhIndex, hold);
     while (compareTo(hold, pivot) > 0)
     {
-      j--;  
-      getValueAt(j, hold);
+      rhIndex--;  
+      getValueAt(rhIndex, hold);
     }  
 
-    if (i <= j) 
+    if (lhIndex <= rhIndex) 
     {
-      getValueAt(i, hold);
-      getValueAt(j, hold2);
-      setValueAt(i, hold2);
-      setValueAt(j, hold);
-      i++;
-      j--;
+      swap(rhIndex,lhIndex);
+      lhIndex++;
+      rhIndex--;
     }
   }
 
   /* recursion */
-  if (left < j)
+  if (left < rhIndex)
   {
-    quickSort(left, j);  
+    quickSort(left, rhIndex);  
   }
         
-  if (i < right)
+  if (lhIndex < right)
   {
-    quickSort(i, right);  
+    quickSort(lhIndex, right);  
   }
             
 }
