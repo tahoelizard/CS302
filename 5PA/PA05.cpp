@@ -130,7 +130,7 @@ int  main()
     if( iSortGood )
        {
         cout << "Elapsed Time for Selection Sort: " 
-             << '-' /* insTime */ << " seconds." << endl;
+             << insTime << " seconds." << endl;
        }
     else
        {
@@ -141,7 +141,7 @@ int  main()
     if( mSortGood )
        {
         cout << endl << "Elapsed Time for Merge Sort: " 
-             << '-' /* mrgTime */ << " seconds." << endl;
+             << mrgTime << " seconds." << endl;
        }
     else
        {
@@ -153,7 +153,7 @@ int  main()
     if( qSortGood )
        {
         cout << endl << "Elapsed Time for Quick Sort: " 
-             << '-' /* qkTime */ << " seconds." << endl << endl;
+             << qkTime << " seconds." << endl << endl;
        }
     else
        {

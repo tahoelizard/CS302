@@ -72,6 +72,7 @@ class QkSorter: public SorterClass<DateType>
       char toUpper( char testChar );
       bool isDigit( char testDigit );
       bool isLeapYear( int year );
+      void quickSort(int left, int right);
   };
 
   #endif // ifndef QKSORTERCLASS_H

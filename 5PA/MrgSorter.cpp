@@ -130,8 +130,8 @@ int MrgSorter::compareTo
        {
         return diff;
        }
+return makeDate( lhObject.date ) - makeDate( rhObject.date );
 
-    return makeDate( rhObject.date ) - makeDate( lhObject.date );
    }
 
 /**
@@ -160,84 +160,77 @@ bool MrgSorter::sort
     return sortSuccess;
    }
 
-   void MrgSorter::mergesort( int low, int high)
+void MrgSorter::mergesort
+        ( 
+          int low, 
+          int high
+        )
 {
-  //cout << "starting merge sort" << endl;
-    int mid;
-    if (low < high)
-    {
-        mid=(low+high)/2;
-        mergesort(low,mid);
-        mergesort(mid+1,high);
-        merge(low,high,mid);
-    }
-    return;
+  int mid;
+  if (low < high)
+  {
+      mid=(low+high)/2;
+      mergesort(low,mid);
+      mergesort(mid+1,high);
+      merge(low,high,mid);
+  }
 }
 
-void MrgSorter::merge(int low, int high, int mid)
+void MrgSorter::merge
+        (
+          int low, 
+          int high, 
+          int mid
+        )
 {
-  //cout << "starting merge " << endl;
-    int i, j, k;
-    DateType hold, hold2; 
-    SimpleVector* c;
-    c = new SimpleVector(high+1);
-    i = low;
-    k = low;
-    j = mid + 1;
+  int i, j, k;
+  DateType hold, hold2; 
+  SimpleVector* c;
+  c = new SimpleVector(high+1);
+  i = low;
+  k = low;
+  j = mid + 1;
 
-    while (i <= mid && j <= high)
+  while (i <= mid && j <= high)
+  {
+    getValueAt(i, hold);
+    getValueAt(j,hold2);
+
+    if (compareTo(hold,hold2) < 0)
     {
-        getValueAt(i, hold);
-        getValueAt(j,hold2);
-         //if (a[i] < a[j])
-        //cout << "Stage 1 " << endl;
-        //cout << "comparing " << hold << " and " << hold2 << endl;
-        if (compareTo(hold,hold2) <= 0)
-        {
-          //cout << hold << " is bigger" << endl;
-            c->setValueAt(k, hold);
-            //c[k] = a[i];
-            k++;
-            i++;
-        }
-        else
-        {
-          //cout << hold2 << " is bigger" << endl;
-            c->setValueAt(k, hold2);
-            //c[k] = a[j];
-            k++;
-            j++;
-        }
-    }
-    //cout << "Stage 2 " << endl;
-    while (i <= mid)
-    {
-      //cout << "seting c index " << i << " to " << hold << endl;
-      getValueAt(i, hold);
-      c->setValueAt(k, hold);
-        //c[k] = a[i];
+        c->setValueAt(k, hold);
         k++;
         i++;
     }
-//cout << "Stage 3 " << endl;
-    while (j <= high)
+    else
     {
-      //cout << "seting c index " << k << " to " << hold << endl;
-      getValueAt(j, hold);
-      c->setValueAt(k, hold);
-        //c[k] = a[j];
-        k++;
-        j++;
+      c->setValueAt(k, hold2);
+      k++;
+      j++;
     }
-    //cout << "Stage 4 " << endl;
-    //cout << "low is " << low << endl;
-    for (i = low; i < k; i++)
-    {
-      //cout << "seting c index " << i << " to " << hold << endl;
-      c->getValueAt(i, hold);
-      setValueAt(i, hold);
-        //a[i] = c[i];
-    }
+  }
+
+  while (i <= mid)
+  {
+    getValueAt(i, hold);
+    c->setValueAt(k, hold);
+    k++;
+    i++;
+  }
+
+  while (j <= high)
+  {
+    getValueAt(j, hold);
+    c->setValueAt(k, hold);
+    k++;
+    j++;
+  }
+
+  for (i = low; i < k; i++)
+  {
+    c->getValueAt(i, hold);
+    setValueAt(i, hold);
+  }
 }
 
 /**
