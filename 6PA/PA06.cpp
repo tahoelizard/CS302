@@ -53,17 +53,7 @@ int  main()
 
     cout << endl << "BC_1 Tree Structure: " << endl;
     BC_1.showStructure();
-    cout << endl << "Height of BC_1: " << BC_1.getHeight() << endl;
 
-    //liz added
-    cout << endl << "BC_1 Pre Order Traversal: " << endl;
-BC_1.preOrderTraversal();
-cout << endl << "BC_1 Post Order Traversal: " << endl;
- BC_1.postOrderTraversal();
-//cout << endl << "BC_1 clearing " << endl;
- //BC_1.clearTree();
-// cout << endl << "structure after clearing:" << endl;
- //BC_1.showStructure();
 //    BC_1.removeItem( NameType( "Opperman, Nathaniel" ) );
 
     BC_2 = BC_1;

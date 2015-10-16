@@ -423,6 +423,7 @@ int BSTClass<DataType>::getHeight() const
 template <typename DataType>
 int BSTClass<DataType>::heightHelper(int counter, BSTNode<DataType> *direction) const
 {	
+	
 	int rightHold = 0;
 	int leftHold = 0;
 	counter++;
@@ -444,6 +445,9 @@ int BSTClass<DataType>::heightHelper(int counter, BSTNode<DataType> *direction) 
 
 	}
 	return counter;
+	
+
+
 }
 
 /**
@@ -535,7 +539,7 @@ void BSTClass<DataType>::postOrdTraversHelper(BSTNode<DataType> *direction) cons
 	{
 		postOrdTraversHelper(direction->left);
 		postOrdTraversHelper(direction->right);
-		cout << direction->dataItem << endl;
+		//cout << direction->dataItem << endl;
 	}
 }
 

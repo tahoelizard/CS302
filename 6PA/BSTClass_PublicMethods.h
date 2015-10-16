@@ -40,7 +40,7 @@ class BSTNode
        DataType dataItem;
 
        BSTNode<DataType> *left;
-       BSTNode<DataType> *right;    
+       BSTNode<DataType> *right;
    };
 
 template <typename DataType>
@@ -75,21 +75,11 @@ class BSTClass
        void postOrderTraversal() const;
        int getHeight() const;
        void showStructure() const;
-
  
     private:
-      void inOrdTraversHelper(BSTNode<DataType> *direction) const;
-      void postOrdTraversHelper(BSTNode<DataType> *direction) const;
-      void preOrdTraversHelper(BSTNode<DataType> *direction) const;
-      void showStructureHelper(BSTNode<DataType> *direction, int treeDepth) const;
-      void clearHelper(BSTNode<DataType> *direction) const;
-      void copyHelper(BSTNode<DataType> *dest, BSTNode<DataType> * source) ;
-      void insertHelper(BSTNode<DataType> *dest, const DataType &source);
-       BSTNode<DataType> *rootNode; 
-       int heightHelper(int counter, BSTNode<DataType> *direction) const;
-   };
 
-#include "BSTClass.cpp"
+       BSTNode<DataType> *rootNode;    
+   };
 
 #endif	// define BST_CLASS_H
 
