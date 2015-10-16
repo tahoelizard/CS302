@@ -42,7 +42,7 @@ class BSTNode
        BSTNode<DataType> *left;
        BSTNode<DataType> *right;
 
-       bool addTo(const DataType &newData);
+       //bool addTo(const DataType &newData);
        int heightHelper(int counter);
 
     private:
@@ -90,8 +90,9 @@ class BSTClass
       void preOrdTraversHelper(BSTNode<DataType> *direction, int treeDepth) const;
       void showStructureHelper(BSTNode<DataType> *direction, int treeDepth) const;
       void clearHelper(BSTNode<DataType> *direction) const;
-      void copyHelper(BSTNode<DataType> *dest, BSTNode<DataType> *source);
-      
+      //void copyHelper(BSTNode<DataType> *dest, BSTNode<DataType> *source);
+      void copyHelper(BSTNode<DataType> *dest, BSTNode<DataType> * source) ;
+      void insertHelper(BSTNode<DataType> *dest, const DataType &source);
        BSTNode<DataType> *rootNode;    
    };
 
