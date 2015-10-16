@@ -216,6 +216,9 @@ void NameType::getName
     copyString( retName, nameData );
    }
 
+#include <iostream>
+using namespace std;
+
 /**
  * @brief Compares this name against another
  *

@@ -21,13 +21,14 @@
 #include <iostream>
 #include <cstring>
 #include "NameType.h"
-#include "BSTClass.h"
+#include "BSTClass.cpp"
 
 using namespace std;
 
 // Global constant definitioans  //////////////////////////////////////////////
 
 const char ENDLINE_CHAR = '\n';
+const char CARRIAGE_RETURN_CHAR = '\r';
 const char NULL_CHAR = '\0';
 const int MAX_NAME_LEN = 80;
 
@@ -52,8 +53,18 @@ int  main()
 
     cout << endl << "BC_1 Tree Structure: " << endl;
     BC_1.showStructure();
+    cout << endl << "Height of BC_1: " << BC_1.getHeight() << endl;
 
-    BC_1.removeItem( NameType( "Opperman, Nathaniel" ) );
+    //liz added
+    cout << endl << "BC_1 Pre Order Traversal: " << endl;
+BC_1.preOrderTraversal();
+cout << endl << "BC_1 Post Order Traversal: " << endl;
+ BC_1.postOrderTraversal();
+//cout << endl << "BC_1 clearing " << endl;
+ //BC_1.clearTree();
+// cout << endl << "structure after clearing:" << endl;
+ //BC_1.showStructure();
+//    BC_1.removeItem( NameType( "Opperman, Nathaniel" ) );
 
     BC_2 = BC_1;
 
@@ -105,11 +116,14 @@ bool getALine( istream &consoleIn, char *str )
 
     while( inChar != ENDLINE_CHAR && index < MAX_NAME_LEN - 1 )
        {
-        str[ index ] = inChar;
+        if( inChar != CARRIAGE_RETURN_CHAR )
+           {
+            str[ index ] = inChar;
 
-        index++;
+            index++;
 
-        str[ index ] = NULL_CHAR;
+            str[ index ] = NULL_CHAR;
+           }
 
         consoleIn.get( inChar );
        }
