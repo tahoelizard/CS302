@@ -110,6 +110,7 @@ class BSTClass
        void showTabs( int numTabs ) const;
        bool checkDepth( int cmdCode, int depth ) const;
        int toPower( int base, int exponent ) const;
+       bool findItemHelper( DataType &dataItem, BSTNode<DataType> *direction, BSTNode<DataType> *&foundLoc ) const;
 
        BSTNode<DataType> *rootNode;    
    };

@@ -117,8 +117,44 @@ bool BSTClass<DataType>::findItem
         DataType &dataItem 
        ) const
    {
-    return false; // temporary stub return
+    BSTNode<DataType> *foundLoc = NULL;
+    if(findItemHelper(dataItem,rootNode,foundLoc))
+    {
+      return true;
+    }
+    else{
+      return false;
+    }
    }
+
+template <typename DataType>
+bool BSTClass<DataType>::findItemHelper
+       ( 
+        DataType &dataItem,
+        BSTNode<DataType> *direction,
+        BSTNode<DataType> *&foundLoc 
+       ) const
+   {
+
+    bool hold = false; 
+    if(dataItem.compareTo(direction->dataItem) == 0){
+      dataItem = direction->dataItem;
+      foundLoc = direction;
+      return true;
+    }
+    else{
+      if(direction->left !=NULL){
+        hold = findItemHelper(dataItem, direction->left, foundLoc);
+        if(hold == true){
+          return hold;
+        }
+      }
+      if(direction->right !=NULL){
+        hold = findItemHelper(dataItem, direction->right, foundLoc);
+      }
+      return hold;
+    }
+}
 
 ////////////////////////////// to be implemented //////////////////////////////
 template <typename DataType>
