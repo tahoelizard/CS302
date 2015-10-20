@@ -110,7 +110,6 @@ void BSTClass<DataType>::insert
     insertHelper( rootNode, newData);
    }
 
-////////////////////////////// to be implemented //////////////////////////////
 template <typename DataType>
 bool BSTClass<DataType>::findItem
        ( 
