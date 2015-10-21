@@ -114,6 +114,7 @@ class BSTClass
 bool removeItemHelper( const DataType &dataItem, BSTNode<DataType> *&foundLoc, BSTNode<DataType> *&foundLocParent); 
   bool promote( BSTNode<DataType> *&foundLoc, BSTNode<DataType> *&foundLocParent);
   void showIndividual(BSTNode<DataType> *workingPtr);
+  int getWidthAtRowHelper(const int levelToCountTo, int levelAt, int& counter, BSTNode<DataType> direction)const;
        BSTNode<DataType> *rootNode;    
    };
 

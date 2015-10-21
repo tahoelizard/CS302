@@ -237,26 +237,23 @@ bool BSTClass<DataType>::promote( BSTNode<DataType> *&foundLoc, BSTNode<DataType
   BSTNode<DataType> *hold, *parHold;
   showIndividual(foundLoc); 
   if(foundLoc->left != NULL)
-  {cout << "here4" <<endl;
+  {
     hold = foundLoc->left;
-    cout << "here5" <<endl;
-    while(hold != NULL)
+    while(hold->right != NULL)
     {
-      cout << "hereLoop" <<endl;
       parHold = hold;
-      cout << "hereLoop2" <<endl;
       hold = hold->right;
-      cout << "hereLoop3" <<endl;
     }
-    
-    cout << "broke loop" <<endl;
+    cout <<"about to promote ";
+     showIndividual(hold);
+     cout <<" to the position of ";
+     showIndividual(foundLoc);
+     cout << endl;
 
- //   if (hold->left != NULL)
+   if (hold->left != NULL)
     {
-      //cout <<parHold->right->dataItem; 
-
-      cout << "here127" <<endl;
-    //  showIndividual(hold->left); 
+      parHold->left = hold->left; 
+      showIndividual(parHold->left); 
     }
 
     cout << "here128" <<endl;
@@ -345,8 +342,26 @@ int BSTClass<DataType>::getWidthAtRow
         int row    // in: row of width to get
        ) const
    {
-    return 0; // temporary stub return
+    int counter = 0;
+    getWidthAtRowHelper(row, 0, counter, *rootNode);
+    return counter;
    }
+
+template<typename DataType>
+int BSTClass<DataType>::getWidthAtRowHelper(const int levelToCountTo, int levelAt, int& counter, BSTNode<DataType> direction) const
+{
+  if(levelToCountTo == levelAt){
+    counter++; 
+  }
+  if(levelAt < levelToCountTo){
+    if(direction.left != NULL){
+      getWidthAtRowHelper(levelToCountTo, levelAt+1, counter, *(direction.left));
+    }
+    if(direction.right != NULL){
+      getWidthAtRowHelper(levelToCountTo, levelAt+1, counter, *(direction.right));
+    }
+  }
+}
 
 ////////////////////////////// to be implemented //////////////////////////////
 template<typename DataType>
