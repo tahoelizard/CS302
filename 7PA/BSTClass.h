@@ -115,6 +115,7 @@ bool removeItemHelper( const DataType &dataItem, BSTNode<DataType> *&foundLoc, B
   bool promote( BSTNode<DataType> *&foundLoc, BSTNode<DataType> *&foundLocParent);
   void showIndividual(BSTNode<DataType> *workingPtr);
   int getWidthAtRowHelper(const int levelToCountTo, int levelAt, int& counter, BSTNode<DataType> direction)const;
+  bool isFullTreeHelper (BSTNode<DataType>* direction) const;
        BSTNode<DataType> *rootNode;    
    };
 

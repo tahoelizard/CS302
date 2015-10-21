@@ -363,7 +363,6 @@ int BSTClass<DataType>::getWidthAtRowHelper(const int levelToCountTo, int levelA
   }
 }
 
-////////////////////////////// to be implemented //////////////////////////////
 template<typename DataType>
 void BSTClass<DataType>::getMaxWidth
        (
@@ -371,9 +370,8 @@ void BSTClass<DataType>::getMaxWidth
         int &maxWidthRow   // out: row at which max width found
        ) const
    {
-    //setting the givens to zero since they're uninitialized in driver and potentially garbage
-    //prime this instead though 
-    maxWidth = 0;
+
+    maxWidth = getWidthAtRow(0);
     maxWidthRow = 0;
 
     int holdWidth = 0;
@@ -387,7 +385,6 @@ void BSTClass<DataType>::getMaxWidth
     }
    }
 
-////////////////////////////// to be implemented //////////////////////////////
 template<typename DataType>
 void BSTClass<DataType>::getMinWidth
       (
@@ -411,7 +408,6 @@ void BSTClass<DataType>::getMinWidth
     }
    }
 
-////////////////////////////// to be implemented //////////////////////////////
 template<typename DataType>
 int BSTClass<DataType>::getBottomWidth
        (
@@ -454,8 +450,30 @@ bool BSTClass<DataType>::isFullTree
         // no parameters
        ) const
    {
-    return false; // temporary stub return
+    return isFullTreeHelper(rootNode);
    }
+
+template<typename DataType>
+bool BSTClass<DataType>::isFullTreeHelper (BSTNode<DataType> * direction)const
+{
+  bool holdResult; 
+  if (direction->left == NULL && direction->right == NULL)
+  {
+    return true; 
+  }
+  else{
+    if (direction->left != NULL && direction->right != NULL){
+      holdResult = isFullTreeHelper(direction->left);
+      if(holdResult){
+        holdResult = isFullTreeHelper(direction->right);
+      }
+      return holdResult;
+    }
+    else{
+      return false; 
+    }
+  }
+}
 
 template<typename DataType>
 void BSTClass<DataType>::showStructure
