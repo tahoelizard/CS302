@@ -371,7 +371,19 @@ void BSTClass<DataType>::getMaxWidth
         int &maxWidthRow   // out: row at which max width found
        ) const
    {
-    // code to be implemented
+    //setting the givens to zero since they're uninitialized in driver and potentially garbage
+    maxWidth = 0;
+    maxWidthRow = 0;
+
+    int holdWidth = 0;
+    int holdRow = 0; 
+    for(int i = 0; i < getHeight(); i++){
+      holdWidth = getWidthAtRow(i); 
+      if(holdWidth > maxWidth){
+        maxWidth = holdWidth; 
+        maxWidthRow = i;
+      }
+    }
    }
 
 ////////////////////////////// to be implemented //////////////////////////////
