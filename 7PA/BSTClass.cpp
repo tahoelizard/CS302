@@ -372,6 +372,7 @@ void BSTClass<DataType>::getMaxWidth
        ) const
    {
     //setting the givens to zero since they're uninitialized in driver and potentially garbage
+    //prime this instead though 
     maxWidth = 0;
     maxWidthRow = 0;
 
@@ -394,7 +395,20 @@ void BSTClass<DataType>::getMinWidth
         int &minWidthRow      // out: row at which min width found
        ) const
    {
-    // code to be implemented
+
+    int holdWidth = 0;
+    int holdRow = 0; 
+
+  minWidth = getWidthAtRow(0); 
+  minWidthRow = 0;
+
+    for(int i = 0; i < getHeight(); i++){
+      holdWidth = getWidthAtRow(i); 
+      if(holdWidth < minWidth){
+        minWidth = holdWidth; 
+        minWidthRow = i;
+      }
+    }
    }
 
 ////////////////////////////// to be implemented //////////////////////////////
@@ -404,7 +418,7 @@ int BSTClass<DataType>::getBottomWidth
         // no parameters
        ) const
    {
-    return 0; // temporary stub return
+    return getWidthAtRow(getHeight() -1);
    }
 
 template<typename DataType>
