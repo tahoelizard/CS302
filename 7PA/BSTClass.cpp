@@ -116,14 +116,9 @@ bool BSTClass<DataType>::findItem
         DataType &dataItem 
        ) const
    {
-    BSTNode<DataType> *foundLoc = NULL;
-    if(findItemHelper(dataItem,rootNode,foundLoc))
-    {
-      return true;
-    }
-    else{
-      return false;
-    }
+    BSTNode<DataType>* foundLocParent;
+    BSTNode<DataType>* foundLoc;
+    return findItemHelper(dataItem,rootNode, foundLoc, foundLocParent);
    }
 
 template <typename DataType>
@@ -131,28 +126,45 @@ bool BSTClass<DataType>::findItemHelper
        ( 
         DataType &dataItem,
         BSTNode<DataType> *direction,
-        BSTNode<DataType> *&foundLoc 
+        BSTNode<DataType> *&foundLoc,
+        BSTNode<DataType> *&foundLocParent
        ) const
    {
 
     bool hold = false; 
-    if(dataItem.compareTo(direction->dataItem) == 0){
-      dataItem = direction->dataItem;
-      foundLoc = direction;
-      return true;
-    }
-    else{
-      if(direction->left !=NULL){
-        hold = findItemHelper(dataItem, direction->left, foundLoc);
-        if(hold == true){
-          return hold;
+
+    if(!isEmpty())
+    {
+      if(dataItem.compareTo(direction->dataItem) == 0)
+      {
+        foundLoc = direction;
+        dataItem = direction->dataItem;
+        return true;
+      }
+      else
+      {
+        if(direction->left !=NULL)
+        {
+          foundLocParent = direction;
+          hold = findItemHelper(dataItem, direction->left, foundLoc, foundLocParent);
+          if(hold == true)
+          {
+            return hold;
+          }
         }
+        if(direction->right !=NULL)
+        {
+          foundLocParent = direction;
+          hold = findItemHelper(dataItem, direction->right, foundLoc, foundLocParent);
+        }
+        return hold;
       }
-      if(direction->right !=NULL){
-        hold = findItemHelper(dataItem, direction->right, foundLoc);
-      }
-      return hold;
     }
+    else
+    {
+      return false;
+    }
+    
 }
 
 ////////////////////////////// to be implemented //////////////////////////////
@@ -162,8 +174,97 @@ bool BSTClass<DataType>::removeItem
         const DataType &dataItem 
        )
    {
-    return false; // temporary stub return
+    DataType hold;
+    hold = dataItem;
+    BSTNode<DataType> *foundLoc = NULL;
+    BSTNode<DataType> *foundLocParent = NULL;
+    if (findItemHelper(hold,rootNode,foundLoc, foundLocParent))
+    {
+      cout << "found" << endl;
+      removeItemHelper(dataItem,foundLoc,foundLocParent);
+      return true;
+    }
+    else{
+      cout << "didn't find" << endl;
+      return false;
+    }
    }
+
+template <typename DataType>
+bool BSTClass<DataType>::removeItemHelper( const DataType &dataItem, BSTNode<DataType> *&foundLoc, BSTNode<DataType> *&foundLocParent){ //what params?? I'd like to use the findHelper function but I also need to know the parent. Don't I? But it seems like just in the case of no children since you need to let the parent know the child died 
+  
+  if (foundLoc != NULL){
+    //if rootNode
+    if(foundLoc == rootNode){
+      cout << "here1" <<endl;
+      //if rootNode has no children
+       if (rootNode->left == NULL && rootNode->right == NULL){
+        cout << "here2" <<endl;
+        delete rootNode;
+        rootNode = NULL;
+      }
+      else{
+        //if rootNode has children, promote
+      }
+    }
+    else{
+      //if not root and no children, delete and adjust parent
+      if (foundLoc->left == NULL && foundLoc->right == NULL){
+        if(foundLocParent->left == foundLoc){
+          foundLocParent->left = NULL;
+          delete foundLoc;
+          foundLoc = NULL;
+        }
+        else{
+          foundLocParent->right = NULL;
+          delete foundLoc;
+          foundLoc = NULL;
+        }
+      }
+      //if children, promote
+      else{
+        promote(foundLoc, foundLocParent);
+      }
+    }
+
+  }  
+
+}
+
+template <typename DataType>
+bool BSTClass<DataType>::promote( BSTNode<DataType> *&foundLoc, BSTNode<DataType> *&foundLocParent)
+{
+  BSTNode<DataType> *hold, *parHold;
+  showIndividual(foundLoc); 
+  if(foundLoc->left != NULL)
+  {cout << "here4" <<endl;
+    hold = foundLoc->left;
+    cout << "here5" <<endl;
+    while(hold != NULL)
+    {
+      cout << "hereLoop" <<endl;
+      parHold = hold;
+      cout << "hereLoop2" <<endl;
+      hold = hold->right;
+      cout << "hereLoop3" <<endl;
+    }
+    
+    cout << "broke loop" <<endl;
+
+ //   if (hold->left != NULL)
+    {
+      //cout <<parHold->right->dataItem; 
+
+      cout << "here127" <<endl;
+    //  showIndividual(hold->left); 
+    }
+
+    cout << "here128" <<endl;
+
+    //foundLoc->dataItem = hold->dataItem;
+
+  }
+}
 
 template<typename DataType>
 bool BSTClass<DataType>::isEmpty
@@ -327,6 +428,14 @@ void BSTClass<DataType>::showStructure
 
     cout << endl;
    }
+
+template<typename DataType>
+void BSTClass<DataType>::showIndividual(BSTNode<DataType> *workingPtr){
+  char acctName[ MAX_STR_LEN ], acctType[ MAX_STR_LEN ];
+    int acctNum;
+    workingPtr->dataItem.getAccount( acctName, acctNum, acctType );
+    cout << acctName << endl;
+}
 
 template<typename DataType>
 void BSTClass<DataType>::showStructureHelper
