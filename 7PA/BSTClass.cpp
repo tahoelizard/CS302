@@ -180,12 +180,10 @@ bool BSTClass<DataType>::removeItem
     BSTNode<DataType> *foundLocParent = NULL;
     if (findItemHelper(hold,rootNode,foundLoc, foundLocParent))
     {
-      cout << "found" << endl;
       removeItemHelper(dataItem,foundLoc,foundLocParent);
       return true;
     }
     else{
-      cout << "didn't find" << endl;
       return false;
     }
    }
@@ -196,10 +194,8 @@ bool BSTClass<DataType>::removeItemHelper( const DataType &dataItem, BSTNode<Dat
   if (foundLoc != NULL){
     //if rootNode
     if(foundLoc == rootNode){
-      cout << "here1" <<endl;
       //if rootNode has no children
        if (rootNode->left == NULL && rootNode->right == NULL){
-        cout << "here2" <<endl;
         delete rootNode;
         rootNode = NULL;
       }
