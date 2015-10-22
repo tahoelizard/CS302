@@ -1,16 +1,16 @@
 // Program Information ////////////////////////////////////////////////////////
 /**
- * @file NameType.cpp
+ * @file BSTClass.cpp
  *
- * @brief Implementation file for NameType class
+ * @brief Implementation file for BSTClass class
  * 
- * @details Implements the constructor method of the NameType class
+ * @details Implements the methods of the BSTClass class
  *
- * @author Michael Leverington
+ * @author Michael Leverington and Elizabeth Johnson
  *
- * @version 1.00 (03 October 2015)
+ * @version 2.00 (21 October 2015)
  *
- * @Note Requires NameType.h
+ * @Note Requires BSTClass.h
  */
 
 // Precompiler directives /////////////////////////////////////////////////////
@@ -109,7 +109,15 @@ void BSTClass<DataType>::insert
    {
     insertHelper( rootNode, newData);
    }
-
+/**
+ * @brief Find Item
+ *
+ * @details Searches tree for given Datatype
+ *          
+ * @param in: Datatype to find
+ *
+ * @note Relies on findItemHelper
+ */
 template <typename DataType>
 bool BSTClass<DataType>::findItem
        ( 
@@ -120,7 +128,18 @@ bool BSTClass<DataType>::findItem
     BSTNode<DataType>* foundLoc;
     return findItemHelper(dataItem,rootNode, foundLoc, foundLocParent);
    }
-
+/**
+ * @brief find item helper
+ *
+ * @details Searches tree for given Datatype and returns its location
+ *          
+ * @param in: Datatype to find
+ * @param in: BST Node to start search at
+ * @param in: BST Node to store found location
+ * @param in: BST Node to store found location's parent
+ *
+ * @note None
+ */
 template <typename DataType>
 bool BSTClass<DataType>::findItemHelper
        ( 
@@ -167,7 +186,15 @@ bool BSTClass<DataType>::findItemHelper
     
 }
 
-////////////////////////////// to be implemented //////////////////////////////
+/**
+ * @brief Remove Item
+ *
+ * @details Searches tree for given Datatype and removes it
+ *          
+ * @param in: Datatype to remove
+ *
+ * @note Relies on findItem, findItemHelper, and removeItemHelper
+ */
 template <typename DataType>
 bool BSTClass<DataType>::removeItem
        ( 
@@ -188,8 +215,19 @@ bool BSTClass<DataType>::removeItem
     }
    }
 
+/**
+ * @brief Remove item helper
+ *
+ * @details Removes given item from tree
+ *          
+ * @param in: Datatype to remove
+ * @param in: BST Node of location of the data to remove
+ * @param in: BST Node of location of the data to remove's parent
+ *
+ * @note None
+ */
 template <typename DataType>
-bool BSTClass<DataType>::removeItemHelper( const DataType &dataItem, BSTNode<DataType> *&foundLoc, BSTNode<DataType> *&foundLocParent){ //what params?? I'd like to use the findHelper function but I also need to know the parent. Don't I? But it seems like just in the case of no children since you need to let the parent know the child died 
+void BSTClass<DataType>::removeItemHelper( const DataType &dataItem, BSTNode<DataType> *&foundLoc, BSTNode<DataType> *&foundLocParent){ //what params?? I'd like to use the findHelper function but I also need to know the parent. Don't I? But it seems like just in the case of no children since you need to let the parent know the child died 
   
   if (foundLoc != NULL){
     //if rootNode
@@ -228,10 +266,23 @@ bool BSTClass<DataType>::removeItemHelper( const DataType &dataItem, BSTNode<Dat
 
 }
 
+/**
+ * @brief Promote
+ *
+ * @details Moves item from lower in the tree to the location of an item that was removed
+ *          
+ * @param in: BST Node of location of the data to remove
+ * @param in: BST Node of location of the data to remove's parent
+ *
+ * @note Aids removeItemHelper
+ */
 template <typename DataType>
-bool BSTClass<DataType>::promote( BSTNode<DataType> *&foundLoc, BSTNode<DataType> *&foundLocParent)
+void BSTClass<DataType>::promote( BSTNode<DataType> *&foundLoc, BSTNode<DataType> *&foundLocParent)
 {
-  BSTNode<DataType> *hold, *parHold;
+
+ BSTNode<DataType> *hold, *parHold;
+ hold = foundLoc;
+ parHold = foundLocParent;
 
   if(foundLoc->left != NULL)
   {
@@ -254,13 +305,14 @@ bool BSTClass<DataType>::promote( BSTNode<DataType> *&foundLoc, BSTNode<DataType
 
 
 foundLoc->dataItem = hold->dataItem;
-
+cout << "here" << endl;
+showIndividual(hold->left);
 
    if (hold->left != NULL)
     {
       cout << "here1" << endl;
-      parHold->left = hold->left; 
-      showIndividual(parHold->right);
+      parHold->right = hold->left; 
+      showIndividual(parHold->left);
     }
     else{
       cout << "here2" << endl;
@@ -270,14 +322,30 @@ foundLoc->dataItem = hold->dataItem;
     }
     cout << "here3" << endl;
   }
+  /*
+  else
+  {
+    hold = foundLoc->right;
+    parHold = foundLoc;
+    while(hold->left != NULL)
+    {
+      parHold = hold;
+      hold = hold->left;
+    }
+    foundLoc->dataItem = hold->dataItem;
+    if (hold->right != NULL)
+    {
+      parHold->right = hold->right; 
+    }
+    else{
+      parHold->left = NULL;
+      delete hold;
+      hold = NULL;
+    }
 
-
-
-
-
-  else{
-    cout << "doing right after left is perfect" << endl;
   }
+  */
+
 }
 
 template<typename DataType>
@@ -352,7 +420,15 @@ int BSTClass<DataType>::getHeight
     return getHeightHelper( rootNode );
    }
 
-////////////////////////////// to be implemented //////////////////////////////
+/**
+ * @brief Get Width At Row
+ *
+ * @details returns the width of given row
+ *          
+ * @param in: Int of row to measure
+ *
+ * @note None
+ */
 template<typename DataType>
 int BSTClass<DataType>::getWidthAtRow
        ( 
@@ -364,8 +440,20 @@ int BSTClass<DataType>::getWidthAtRow
     return counter;
    }
 
+/**
+ * @brief Get Width At Row Helper
+ *
+ * @details returns the width of given row
+ *          
+ * @param in: Int of row to measure
+ * @param in: Int of current row
+  * @param in: Int of counter
+ * @param in: BST Node of where to check
+ *
+ * @note None
+ */
 template<typename DataType>
-int BSTClass<DataType>::getWidthAtRowHelper(const int levelToCountTo, int levelAt, int& counter, BSTNode<DataType> direction) const
+void BSTClass<DataType>::getWidthAtRowHelper(const int levelToCountTo, int levelAt, int& counter, BSTNode<DataType> direction) const
 {
   if(levelToCountTo == levelAt){
     counter++; 
@@ -380,6 +468,16 @@ int BSTClass<DataType>::getWidthAtRowHelper(const int levelToCountTo, int levelA
   }
 }
 
+/**
+ * @brief Get Max Width
+ *
+ * @details Returns the value and row of the widest row
+ *          
+ * @param in: Int to store width value
+ * @param in: Int to store row value
+ *
+ * @note Relies on getWidthAtRow and getHeight
+ */
 template<typename DataType>
 void BSTClass<DataType>::getMaxWidth
        (
@@ -393,15 +491,25 @@ void BSTClass<DataType>::getMaxWidth
 
     int holdWidth = 0;
     int holdRow = 0; 
-    for(int i = 0; i < getHeight(); i++){
-      holdWidth = getWidthAtRow(i); 
+    for(holdRow = 0; holdRow < getHeight(); holdRow++){
+      holdWidth = getWidthAtRow(holdRow); 
       if(holdWidth > maxWidth){
         maxWidth = holdWidth; 
-        maxWidthRow = i;
+        maxWidthRow = holdRow;
       }
     }
    }
 
+/**
+ * @brief Get Min Width
+ *
+ * @details Returns the value and row of the slimest row
+ *          
+ * @param in: Int to store width value
+ * @param in: Int to store row value
+ *
+ * @note Relies on getWidthAtRow and getHeight
+ */
 template<typename DataType>
 void BSTClass<DataType>::getMinWidth
       (
@@ -416,22 +524,31 @@ void BSTClass<DataType>::getMinWidth
   minWidth = getWidthAtRow(0); 
   minWidthRow = 0;
 
-    for(int i = 0; i < getHeight(); i++){
-      holdWidth = getWidthAtRow(i); 
+    for(holdRow = 0; holdRow < getHeight(); holdRow++){
+      holdWidth = getWidthAtRow(holdRow); 
       if(holdWidth < minWidth){
         minWidth = holdWidth; 
-        minWidthRow = i;
+        minWidthRow = holdRow;
       }
     }
    }
 
+/**
+ * @brief Get Max Width
+ *
+ * @details Returns the value and row of the widest row
+ *          
+ * @param in: None
+ *
+ * @note Relies on getWidthAtRow and getHeight
+ */
 template<typename DataType>
 int BSTClass<DataType>::getBottomWidth
        (
         // no parameters
        ) const
    {
-    return getWidthAtRow(getHeight() -1);
+    return getWidthAtRow(getHeight()-1);
    }
 
 template<typename DataType>
@@ -460,7 +577,15 @@ bool BSTClass<DataType>::isCompleteTree
     return checkDepth( GET_RESULT, 0 );
    }
 
-////////////////////////////// to be implemented //////////////////////////////
+/**
+ * @brief Is Full Tree
+ *
+ * @details Checks of the tree is full
+ *          
+ * @param in: None
+ *
+ * @note Relies on isFullTreeHelper
+ */
 template<typename DataType>
 bool BSTClass<DataType>::isFullTree
        (
@@ -470,6 +595,15 @@ bool BSTClass<DataType>::isFullTree
     return isFullTreeHelper(rootNode);
    }
 
+/**
+ * @brief Is Full Tree Helper
+ *
+ * @details Checks of the tree is full
+ *          
+ * @param in: BST Node of where to check
+ *
+ * @note Relies on isFullTreeHelper
+ */
 template<typename DataType>
 bool BSTClass<DataType>::isFullTreeHelper (BSTNode<DataType> * direction)const
 {

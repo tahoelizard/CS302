@@ -110,12 +110,15 @@ class BSTClass
        void showTabs( int numTabs ) const;
        bool checkDepth( int cmdCode, int depth ) const;
        int toPower( int base, int exponent ) const;
-       bool findItemHelper( DataType &dataItem, BSTNode<DataType> *direction, BSTNode<DataType> *&foundLoc, BSTNode<DataType> *&foundLocParent ) const;
-bool removeItemHelper( const DataType &dataItem, BSTNode<DataType> *&foundLoc, BSTNode<DataType> *&foundLocParent); 
-  bool promote( BSTNode<DataType> *&foundLoc, BSTNode<DataType> *&foundLocParent);
-  void showIndividual(BSTNode<DataType> *workingPtr);
-  int getWidthAtRowHelper(const int levelToCountTo, int levelAt, int& counter, BSTNode<DataType> direction)const;
-  bool isFullTreeHelper (BSTNode<DataType>* direction) const;
+       bool findItemHelper( DataType &dataItem, BSTNode<DataType> *direction, BSTNode<DataType> *&foundLoc, 
+                              BSTNode<DataType> *&foundLocParent ) const;
+       void removeItemHelper( const DataType &dataItem, BSTNode<DataType> *&foundLoc, 
+                              BSTNode<DataType> *&foundLocParent); 
+       void promote( BSTNode<DataType> *&foundLoc, BSTNode<DataType> *&foundLocParent);
+       void showIndividual(BSTNode<DataType> *workingPtr);
+       void getWidthAtRowHelper(const int levelToCountTo, int levelAt, int& counter, 
+                                BSTNode<DataType> direction)const;
+       bool isFullTreeHelper (BSTNode<DataType>* direction) const;
        BSTNode<DataType> *rootNode;    
    };
 
