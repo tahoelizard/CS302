@@ -195,14 +195,15 @@ bool BSTClass<DataType>::removeItemHelper( const DataType &dataItem, BSTNode<Dat
     //if rootNode
     if(foundLoc == rootNode){
       //if rootNode has no children
-       if (rootNode->left == NULL && rootNode->right == NULL){
+      if (rootNode->left == NULL && rootNode->right == NULL){
         delete rootNode;
         rootNode = NULL;
       }
       else{
-        //if rootNode has children, promote
+        promote(rootNode, rootNode);
       }
     }
+
     else{
       //if not root and no children, delete and adjust parent
       if (foundLoc->left == NULL && foundLoc->right == NULL){
@@ -231,31 +232,51 @@ template <typename DataType>
 bool BSTClass<DataType>::promote( BSTNode<DataType> *&foundLoc, BSTNode<DataType> *&foundLocParent)
 {
   BSTNode<DataType> *hold, *parHold;
-  showIndividual(foundLoc); 
+
   if(foundLoc->left != NULL)
   {
     hold = foundLoc->left;
+    parHold = foundLoc;
     while(hold->right != NULL)
     {
       parHold = hold;
       hold = hold->right;
     }
-    cout <<"about to promote ";
+         cout <<"about to promote ";
      showIndividual(hold);
+     cout <<"with parent ";
+     showIndividual(parHold);
      cout <<" to the position of ";
      showIndividual(foundLoc);
      cout << endl;
 
+
+
+
+foundLoc->dataItem = hold->dataItem;
+
+
    if (hold->left != NULL)
     {
+      cout << "here1" << endl;
       parHold->left = hold->left; 
-      showIndividual(parHold->left); 
+      showIndividual(parHold->right);
     }
+    else{
+      cout << "here2" << endl;
+      parHold->right = NULL;
+      delete hold;
+      hold = NULL;
+    }
+    cout << "here3" << endl;
+  }
 
-    cout << "here128" <<endl;
 
-    //foundLoc->dataItem = hold->dataItem;
 
+
+
+  else{
+    cout << "doing right after left is perfect" << endl;
   }
 }
 

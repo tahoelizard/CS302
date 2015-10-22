@@ -91,15 +91,16 @@ int  main()
         case BC_1_RI:
            cout << endl << "Test of removal operation" << endl;
            cout << endl << "BC_1 Traversal before removal: " << endl;
-           BC_1.inOrderTraversal();
+           BC_1.showStructure();
 
-           removeAcct.setAccount( "Niday, Brian", 0, "0" );
+           removeAcct.setAccount( "Ruan, Riley", 0, "0" );
            BC_1.removeItem( removeAcct );
 
            cout << endl 
-                << "BC_1 Traversal after removal of Niday, Brian: " 
+                << "BC_1 Traversal after removal of Ruan, Riley: " 
                 << endl;
-           BC_1.inOrderTraversal();
+           //BC_1.inOrderTraversal();
+                BC_1.showStructure();
            break;
 
         case BC_1_FI:
