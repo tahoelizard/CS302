@@ -293,26 +293,16 @@ void BSTClass<DataType>::promote( BSTNode<DataType> *&foundLoc, BSTNode<DataType
       parHold = hold;
       hold = hold->right;
     }
-         cout <<"about to promote ";
-     showIndividual(hold);
-     cout <<"with parent ";
-     showIndividual(parHold);
-     cout <<" to the position of ";
-     showIndividual(foundLoc);
-     cout << endl;
 
 
 
 
 foundLoc->dataItem = hold->dataItem;
-cout << "here" << endl;
-showIndividual(hold->left);
 
    if (hold->left != NULL)
     {
-      cout << "here1" << endl;
       parHold->right = hold->left; 
-      showIndividual(parHold->left);
+
     }
     else{
       cout << "here2" << endl;

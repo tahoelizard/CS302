@@ -93,11 +93,11 @@ int  main()
            cout << endl << "BC_1 Traversal before removal: " << endl;
            BC_1.inOrderTraversal();
        //    BC_1.showStructure();
-           removeAcct.setAccount( "Ruan, Riley", 0, "0" );
+           removeAcct.setAccount( "Zandbergen, Alexander", 0, "0" );
            BC_1.removeItem( removeAcct );
 
            cout << endl 
-                << "BC_1 Traversal after removal of Ruan, Riley: " 
+                << "BC_1 Traversal after removal of Zandbergen, Alexander: " 
                 << endl;
            BC_1.inOrderTraversal();
            //     BC_1.showStructure();
