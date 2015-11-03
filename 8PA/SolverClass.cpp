@@ -45,11 +45,13 @@ bool SolverClass::findSolution()
 }
 bool SolverClass::setContainerRectangle( int height, int width )
 {
-
+	container.setWidth( width );
+	  container.setHeight( height );
+       container.setIDLetter( 'O' );
 }
 bool SolverClass::addInsideRectangle( int height, int width )
 {
-
+	*(inputList[inputList.getSize()-1]) = new Rectangle (height, width, 'I');
 }
 void SolverClass::setDisplayFlag( bool setFlag )
 {

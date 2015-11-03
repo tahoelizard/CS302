@@ -22,6 +22,8 @@
 // Header files ///////////////////////////////////////////////////////////////
 
 #include <stdexcept>
+ #include "Rectangle.h"
+ #include "SimpleVector.h"
 
 using namespace std;
 
@@ -45,7 +47,8 @@ class SolverClass
        void displayField() const;
 
    private:
-
+      Rectangle container;
+      SimpleVector<Rectangle> inputList;
    };
 
 // Terminating precompiler directives  ////////////////////////////////////////
