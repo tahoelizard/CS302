@@ -23,6 +23,8 @@
 
 #include <stdexcept>
  #include "SolverClass.h"
+  #include "SimpleMatrix.cpp"
+ #include <iostream>
 
 using namespace std;
 
@@ -41,17 +43,56 @@ SolverClass::~SolverClass( )
 // modifiers
 bool SolverClass::findSolution()
 {
+	cout << (*inputList[0]).getIDLetter() << endl;
+addRectToMatrix(*inputList[0]);
+addRectToMatrix(*inputList[1]);
+addRectToMatrix(*inputList[2]);
+addRectToMatrix(*inputList[3]);
+
 
 }
+
+bool SolverClass::addRectToMatrix(Rectangle input)
+{
+	int row;
+	int column;
+	int rowHold;
+	int columnHold;
+	if(!input.isUsed()){
+		if(findNextLocation(row, column)){
+
+			rowHold = row;
+			columnHold = column;
+			for(int i= 0; i <input.getWidth();i++){
+				for(int j= 0; j <input.getHeight();j++){
+					container->setValueAt(row,column,input.getIDLetter());
+					row++;
+				}
+				column++;
+				row = rowHold;
+			}
+		}
+		
+	}
+}
+
+
 bool SolverClass::setContainerRectangle( int height, int width )
 {
-	container.setWidth( width );
-	  container.setHeight( height );
-       container.setIDLetter( 'O' );
+	container = new SimpleMatrix<char> (height, width, 'O');
 }
 bool SolverClass::addInsideRectangle( int height, int width )
 {
-	*(inputList[inputList.getSize()-1]) = new Rectangle (height, width, 'I');
+	char hold;
+	if (inputList.getSize() > 14){
+		hold = inputList.getSize()+1 + 'A';
+	}
+	else{
+		hold = inputList.getSize() + 'A';
+	}
+
+	inputList[inputList.getSize()] = new Rectangle (height, width, hold);
+	inputList.incrementSize();
 }
 void SolverClass::setDisplayFlag( bool setFlag )
 {
@@ -59,7 +100,38 @@ void SolverClass::setDisplayFlag( bool setFlag )
 }
 void SolverClass::displayField() const
 {
+	char hold;
+	for(int j = 0; j < container->getNumCols(); j++)
+	{
+		for(int i = 0; i < container->getNumRows(); i++)
+		{
+			container->getValueAt(i,j, hold);
+			cout << hold << ' ';		
+		}
+		cout << endl;
+	}
+}
 
+bool SolverClass::findNextLocation(int& foundRow, int& foundColumn)
+{
+	bool flag = false;
+	char hold;
+
+	for(int i = 0; i < container->getNumRows(); i++)
+	{
+		for(int j = 0; j < container->getNumCols(); j++)
+		{
+			container->getValueAt(i,j, hold);
+			if (hold== 'O')
+			{
+				flag = true;
+				foundRow = i;
+				foundColumn = j; 
+				return flag;
+			}
+		}
+	}
+	return flag;
 }
 
 // Terminating precompiler directives  ////////////////////////////////////////

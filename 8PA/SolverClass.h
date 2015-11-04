@@ -24,6 +24,7 @@
 #include <stdexcept>
  #include "Rectangle.h"
  #include "SimpleVector.h"
+ #include "SimpleMatrix.h"
 
 using namespace std;
 
@@ -45,10 +46,12 @@ class SolverClass
        bool addInsideRectangle( int height, int width );
        void setDisplayFlag( bool setFlag );
        void displayField() const;
+       bool findNextLocation(int& foundRow, int& foundColumn);
+       bool addRectToMatrix(Rectangle input);
 
    private:
-      Rectangle container;
-      SimpleVector<Rectangle> inputList;
+      SimpleMatrix<char>* container;
+      SimpleVector<Rectangle*> inputList;
    };
 
 // Terminating precompiler directives  ////////////////////////////////////////
