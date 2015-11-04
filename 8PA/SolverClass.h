@@ -48,6 +48,8 @@ class SolverClass
        void displayField() const;
        bool findNextLocation(int& foundRow, int& foundColumn);
        bool addRectToMatrix(Rectangle input);
+       void removeCharFromMatrix(char scrubChar);
+       bool findSolutionHelper(int indexToTry);
 
    private:
       SimpleMatrix<char>* container;
