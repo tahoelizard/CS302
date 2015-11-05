@@ -43,152 +43,219 @@ SolverClass::~SolverClass( )
 // modifiers
 bool SolverClass::findSolution()
 {
-	return findSolutionHelper(0);
+	bool flag; 
+	flag = findSolutionHelper(0);
+	if (!flag){
+		removeAllFromMatrix();
+	}
 }
 
 bool SolverClass::findSolutionHelper(int indexToTry)
 {
-	/*
-try 
-if succes
-	try next
-	if success
-		return true
-	else
-		rotate self 
-		try
-		if succes
-			try next
-			if success
-				return true
-			else
-				remove self
-				try next
-				if success
-					insert self
-					if success
-						return true
-					else
-						rotate self 
-						try
-				
-
-
-*/
-	if(addRectToMatrix(*inputList[indexToTry]))
+	//cout << "trying " << inputList[indexToTry]->getIDLetter() << endl;
+	//check if at end of list
+	if(indexToTry != inputList.getSize() && !(*inputList[indexToTry]).isUsed())
 	{
-		if(indexToTry == inputList.getSize()){
-			return true;
-		}
-		else{
+	//try
+		
+		if(addRectToMatrix(*inputList[indexToTry]))
+		{
+		//if success:
+			//try next
 			if(findSolutionHelper(indexToTry+1))
 			{
-				return true; 
+				//if success:
+					//return true
+				//cout << "hear" << endl;
+				return true;
 			}
-			else
-			{
+				//if fail:
+			else{
+				//rotate self
+				//cout << "rotated" << endl;
 				removeCharFromMatrix(inputList[indexToTry]->getIDLetter());
-				inputList[indexToTry]->setUsedState(false);
+					inputList[indexToTry]->setUsedState(false);
 				inputList[indexToTry]->rotate();
-				if(addRectToMatrix(*inputList[indexToTry]))
+				//try next
+				if(findSolutionHelper(indexToTry+1))
 				{
-					if(findSolutionHelper(indexToTry+1))
-					{
-						return true; 
-					}
-					else
-					{
-						//remove self
-						removeCharFromMatrix(inputList[indexToTry]->getIDLetter());
-						inputList[indexToTry]->setUsedState(false);
-					}
+						//if success:
+							//return true
+					return true;
 				}
+				//if fail:
 				else
 				{
+					//cout << "hear" << endl;
 					//remove self
 					removeCharFromMatrix(inputList[indexToTry]->getIDLetter());
 					inputList[indexToTry]->setUsedState(false);
 					//try next
 					if(findSolutionHelper(indexToTry+1))
 					{
-						if(addRectToMatrix(*inputList[indexToTry]))
+				 	//if success:
+				 		//try self
+				 		if(findSolutionHelper(indexToTry+1))
 						{
+				 			//if success:
+				 				//return true
 							return true;
 						}
-						else
-						{
-							if(!addRectToMatrix(*inputList[indexToTry]))
-							{
-								removeCharFromMatrix(inputList[indexToTry]->getIDLetter());
+						else{
+							//if fail:
+							//rotate 
+							//cout << "rotated" << endl;
+							removeCharFromMatrix(inputList[indexToTry]->getIDLetter());
 					inputList[indexToTry]->setUsedState(false);
-								inputList[indexToTry]->rotate();
-								if(addRectToMatrix(*inputList[indexToTry]))
-								{
-									return true;
-								}
-								else
-								{
-									return false;
-								}
-							}
-							else
+							inputList[indexToTry]->rotate();
+							if(addRectToMatrix(*inputList[indexToTry]))
 							{
 								return true;
 							}
-						}
+							else{
+								return false;
+							}
 
+							 				//try self
+							 					//if success:
+							 						//return true
+												//if fail:
+													//return false
+						}
 					}
-				
-					else
-					{
+					else{
+						//if fail:
+							//return false
 						return false;
-					}
+					}					
+								
 				}
+
+			}
+		}
+		else{
+	//if fail:
+		//try next
+			if(findSolutionHelper(indexToTry+1)){
+			//if success:
+				//try self
+					if(addRectToMatrix(*inputList[indexToTry]))
+					{
+						return true;
+					}
+					else{
+													inputList[indexToTry]->rotate();
+							if(addRectToMatrix(*inputList[indexToTry]))
+							{
+								return true;
+							}
+							else{
+								return false;
+							}
+					}
+					//if success:
+						//return true
+					//if fail:
+						//return false
+			}
+			else{
+			//if fail:
+				//return false
+				return false;
 			}
 		}
 	}
-
+	else{
+		//cout << "nope " << endl;
+		return true;
+	}
 }
 
 bool SolverClass::addRectToMatrix(Rectangle input)
 {
 	int rowBound = container->getNumRows();
 	int colBound = container->getNumCols();
-	int row;
-	int column;
+	int row = 0;
+	int column = 0;
 	int rowHold;
 	int columnHold;
+	int rowCounter;
+	int columnCounter;
 	char hold;
-	if(!input.isUsed()){
-		if(findNextLocation(row, column)){
-			rowHold = row;
-			columnHold = column;
-			for(int i= 0; i <input.getWidth();i++){
-				for(int j= 0; j <input.getHeight();j++){
-					if(row < rowBound && column < colBound)
+	bool flag =false;
+	if(!input.isUsed())
+	{
+		while(flag == false)
+		{
+			if(findNextLocation(row, column))
+			{
+				rowHold = row;
+				columnHold = column;
+				rowCounter = row;
+				columnCounter = column;
+				//cout << "-----[" << row << "," << column << "]" << endl;
+				int i, j;
+
+				
+					for(j= 0; j <input.getHeight();j++)
+				{
+					for( i= 0; i <input.getWidth();i++)
 					{
-						container->getValueAt(row,column,hold);
-					 	if( hold == 'O'){
-							container->setValueAt(row,column,input.getIDLetter());
-							row++;
-						}
+
+						//cout << i << "," << j << endl;
+						
+						if(rowCounter < rowBound && columnCounter < colBound)
+							{
+								
+								container->getValueAt(rowCounter,columnCounter,hold);
+								//cout << hold << endl;
+								
+							 	if( hold == 'O')
+							 	{
+							 		//cout << "[" << rowCounter << "," << columnCounter << "]" << endl;
+									container->setValueAt(rowCounter,columnCounter,input.getIDLetter());
+									//cout << row- input.getHeight()<< "," << column-columnHold << " is not " << rowHold << "," << columnHold << endl;
+									if(j ==input.getHeight()-1 && i ==input.getWidth()-1){
+										//cout <<  "successfully added " << input.getIDLetter() << endl; 
+										flag = true;
+									}
+									rowCounter++;
+								}
+								else
+								{
+									//	cout <<  "could not add " << input.getIDLetter() << endl; 
+									removeCharFromMatrix(input.getIDLetter());
+									return false;
+								}
+
+							}
+
+							else
+							{
+								//cout << "not2" << endl; 
+								removeCharFromMatrix(input.getIDLetter());
+								return false;
+
+							}
+						
 					}
-					else{
-						removeCharFromMatrix(input.getIDLetter());
-						return false;
-					}
+					columnCounter++;
+					rowCounter = rowHold;
+					//cout << "~~" <<rowHold << endl;
+					
 				}
+				//flag = true;
+				row++;
 				column++;
-				row = rowHold;
 			}
 		}
 		input.setUsedState(true);
 	}
-	else{
+	else
+	{
 		return false;
 	}
-	displayField();
-	cout << endl;
+//displayField();
 	return true; 
 }
 
@@ -208,6 +275,23 @@ void SolverClass::removeCharFromMatrix(char scrubChar)
 		}
 	}
 }
+void SolverClass::removeAllFromMatrix()
+{
+	char hold;
+
+	for(int i = 0; i < container->getNumRows(); i++)
+	{
+		for(int j = 0; j < container->getNumCols(); j++)
+		{
+			container->getValueAt(i,j, hold);
+			if (hold != 'O')
+			{
+				container->setValueAt(i,j, 'O');
+			}
+		}
+	}
+}
+
 
 bool SolverClass::setContainerRectangle( int height, int width )
 {
@@ -240,8 +324,10 @@ void SolverClass::displayField() const
 			container->getValueAt(i,j, hold);
 			cout << hold << ' ';		
 		}
-		cout << endl;
+		
+			cout << endl;
 	}
+	cout << endl;
 }
 
 bool SolverClass::findNextLocation(int& foundRow, int& foundColumn)
@@ -249,9 +335,9 @@ bool SolverClass::findNextLocation(int& foundRow, int& foundColumn)
 	bool flag = false;
 	char hold;
 
-	for(int i = 0; i < container->getNumRows(); i++)
+	for(int i = foundRow; i < container->getNumRows(); i++)
 	{
-		for(int j = 0; j < container->getNumCols(); j++)
+		for(int j = foundColumn; j < container->getNumCols(); j++)
 		{
 			container->getValueAt(i,j, hold);
 			if (hold== 'O')

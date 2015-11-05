@@ -50,6 +50,7 @@ class SolverClass
        bool addRectToMatrix(Rectangle input);
        void removeCharFromMatrix(char scrubChar);
        bool findSolutionHelper(int indexToTry);
+       void removeAllFromMatrix();
 
    private:
       SimpleMatrix<char>* container;
