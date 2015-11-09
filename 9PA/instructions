@@ -1,0 +1,19 @@
+Your task will be to solve two problems: 1) How to create a binary tree that is always complete even when items are removed, and 2) How to create a Heap (a min heap in this case) within the given tree
+You are again required to use recursion and dynamic binary tree nodes to solve this problem; there is another clear alternate to using binary trees which is to use an array to "fake" a tree; however, no algorithmic strategies other than recursion and dynamically allocated binary trees will be accepted, or graded
+You are given some file(s) in the submit system that you must use to implement your programming work as follows:
+MedType.h & MedType.cpp - these are new data types that are required for use in this assignment
+SimpleTimer.h & SimpleTimer.cpp - timer class for measuring speed of operation; this has been updated for larger time periods
+HeapClass_AssignmentBase.h & HeapClass_AssignmentBase.cpp - this is an almost complete class, but needs the following methods implemented (and the file names changed to HeapClass.h and HeapClass.cpp):
+addItem - this method is the one that adds a node in a such a way as to keep the tree complete, and then locates the new data in the correct position related to its priority; the fundamental strategy which must be used for this assignment is that the data is placed in the newest node at the bottom/end of the tree, and then shifted up the tree to an appropriate location
+removeItem - this is the method that removes the item at the top of the heap, placing the last item in the heap at the top, then shifting it down the tree to an appropriate location so that the heap integrity is maintained
+it is your responsibility to provide any and all other member methods or data as needed
+PA09.cpp - a driver function to test your process; this driver has a few options for testing your program as you are developing it
+Your programming work will be uploaded to the submission system at https://www.cse.unr.edu/submit in PA09 
+Remember that you must show Doxygen notes at the beginning of each file and of each function, as specified previously); this is only required for the two specified functions as well as any supporting methods you might create
+Other work, specified below, will be uploaded as a PDF document to this (WebCampus) assignment system
+This includes your journal, which must respond to the following questions:
+What worked well for this assignment
+What did not work well for this assignment
+What did you need help with on this assignment
+What did you learn from this assignment
+It also includes a PDF document with your Doxygen documentation
