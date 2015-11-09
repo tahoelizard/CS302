@@ -122,9 +122,52 @@ bool HeapClass<KeyType, DataType>::removeItem
        )
    {
     // assignment component
+    HeapNode<KeyType, DataType> *hold;
+    HeapNode<KeyType, DataType> *parentHold;
+    
+    if(!isEmpty()){
 
-    return false; // temporary stub return
+      hold = findPromotion(parentHold);
+      rootNode->dataItem = hold->dataItem;
+      rootNode->keyItem = hold->keyItem;
+
+      //tell parent
+      if(parentHold->right == hold)
+      {
+        parentHold->right= NULL;
+      }
+      else
+      {
+        parentHold->left = NULL;
+      }
+
+      //clean up
+      delete hold;
+      hold = NULL;
+
+      return trickleDown(rootNode);
+    }
+    else
+    {
+      return false;
+    }
+    
    }
+
+template<typename KeyType, typename DataType>
+   HeapNode<KeyType, DataType>* HeapClass<KeyType, DataType>::findPromotion(HeapNode<KeyType, DataType>* moveNode)
+{
+  //stub
+  return false;
+}
+
+
+template<typename KeyType, typename DataType>
+bool HeapClass<KeyType, DataType>::trickleDown(HeapNode<KeyType, DataType>* moveNode)
+{
+
+}
+
 
 template<typename KeyType, typename DataType>
 bool HeapClass<KeyType, DataType>::isEmpty
