@@ -104,6 +104,58 @@ void HeapClass<KeyType, DataType>::clearTree
     rootNode = NULL;
    }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 template<typename KeyType, typename DataType>
 void HeapClass<KeyType, DataType>::addItem
        ( 
@@ -112,10 +164,24 @@ void HeapClass<KeyType, DataType>::addItem
        )
    {
     // assignment component
+
+    HeapNode<KeyType, DataType> *parentHold;
+
     if(isEmpty()){
       rootNode = new HeapNode<KeyType, DataType>(newKey, newData,NULL,NULL,NULL);
     }
-
+    else{
+      *parentHold = findAddSpot();
+      if(parentHold->left == NULL ){
+        parentHold->left =new HeapNode<KeyType, DataType>(newKey, newData,parentHold,NULL,NULL);
+        trickleUp(parentHold->left);
+      }
+      else{
+        parentHold->right =new HeapNode<KeyType, DataType>(newKey, newData,parentHold,NULL,NULL);
+        trickleUp(parentHold->right);
+      }
+      
+    }
    }
 
 template<typename KeyType, typename DataType>
@@ -132,25 +198,32 @@ bool HeapClass<KeyType, DataType>::removeItem
     if(!isEmpty()){
 
       findPromotion(hold);
-      rootNode->dataItem = hold->dataItem;
-      rootNode->keyItem = hold->keyItem;
-
-      //tell parent
-      parentHold = hold->parent;
-      if(parentHold->right == hold)
-      {
-        parentHold->right= NULL;
+      if(hold == rootNode){
+        delete rootNode;
+        rootNode = NULL;
       }
       else
       {
-        parentHold->left = NULL;
+        rootNode->dataItem = hold->dataItem;
+        rootNode->keyItem = hold->keyItem;
+
+        //tell parent
+        parentHold = hold->parent;
+        if(parentHold->right == hold)
+        {
+          parentHold->right= NULL;
+        }
+        else
+        {
+          parentHold->left = NULL;
+        }
+
+        //clean up
+        delete hold;
+        hold = NULL;
+
+        return trickleDown(rootNode);
       }
-
-      //clean up
-      delete hold;
-      hold = NULL;
-
-      return trickleDown(rootNode);
     }
     else
     {
@@ -160,7 +233,7 @@ bool HeapClass<KeyType, DataType>::removeItem
    }
 
 template<typename KeyType, typename DataType>
-   bool HeapClass<KeyType, DataType>::findPromotion(HeapNode<KeyType, DataType>* moveNode)
+   bool HeapClass<KeyType, DataType>::findPromotion(HeapNode<KeyType, DataType>*& moveNode)
 {
   //stub
   return false;
@@ -170,8 +243,80 @@ template<typename KeyType, typename DataType>
 template<typename KeyType, typename DataType>
 bool HeapClass<KeyType, DataType>::trickleDown(HeapNode<KeyType, DataType>* moveNode)
 {
+  while(moveNode->keyItem > moveNode->parent->keyItem)
+  {
+    //swap
+  }
+}
+
+template<typename KeyType, typename DataType>
+bool HeapClass<KeyType, DataType>::trickleUp(HeapNode<KeyType, DataType>* moveNode)
+{
 
 }
+
+template<typename KeyType, typename DataType>
+  HeapNode<KeyType, DataType> HeapClass<KeyType, DataType>::findAddSpot()
+  {
+      if(getLeftHeight() == getRightHeight()){
+        //return far left's left
+      }
+      else{
+
+      }
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 template<typename KeyType, typename DataType>
