@@ -112,6 +112,10 @@ void HeapClass<KeyType, DataType>::addItem
        )
    {
     // assignment component
+    if(isEmpty()){
+      rootNode = new HeapNode<KeyType, DataType>(newKey, newData,NULL,NULL,NULL);
+    }
+
    }
 
 template<typename KeyType, typename DataType>
@@ -127,11 +131,12 @@ bool HeapClass<KeyType, DataType>::removeItem
     
     if(!isEmpty()){
 
-      hold = findPromotion(parentHold);
+      findPromotion(hold);
       rootNode->dataItem = hold->dataItem;
       rootNode->keyItem = hold->keyItem;
 
       //tell parent
+      parentHold = hold->parent;
       if(parentHold->right == hold)
       {
         parentHold->right= NULL;
@@ -155,7 +160,7 @@ bool HeapClass<KeyType, DataType>::removeItem
    }
 
 template<typename KeyType, typename DataType>
-   HeapNode<KeyType, DataType>* HeapClass<KeyType, DataType>::findPromotion(HeapNode<KeyType, DataType>* moveNode)
+   bool HeapClass<KeyType, DataType>::findPromotion(HeapNode<KeyType, DataType>* moveNode)
 {
   //stub
   return false;

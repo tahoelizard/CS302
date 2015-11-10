@@ -106,7 +106,7 @@ class HeapClass
        void showTabs( int numTabs ) const;
 
        bool trickleDown(HeapNode<KeyType, DataType>* moveNode);
-        HeapNode<KeyType, DataType>* findPromotion(HeapNode<KeyType, DataType>* moveNode);
+       bool findPromotion(HeapNode<KeyType, DataType>* moveNode);
 
        HeapNode<KeyType, DataType> *rootNode;    
    };
