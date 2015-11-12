@@ -22,6 +22,7 @@
 
 #include "HeapClass.h"
 #include <new>
+ #include <iostream>
 
 using namespace std;
 
@@ -154,7 +155,7 @@ void HeapClass<KeyType, DataType>::clearTree
 
 
 
-
+/////////////////////////////////add functions////////////////////////////////
 
 template<typename KeyType, typename DataType>
 void HeapClass<KeyType, DataType>::addItem
@@ -164,25 +165,226 @@ void HeapClass<KeyType, DataType>::addItem
        )
    {
     // assignment component
-
+cout << " starting to add" << endl;
+    char patientName[ 30 ], medicalCode[ MAX_STR_LEN ];
+    char patientGender;
     HeapNode<KeyType, DataType> *parentHold;
+
+
 
     if(isEmpty()){
       rootNode = new HeapNode<KeyType, DataType>(newKey, newData,NULL,NULL,NULL);
+      cout << "added root to empty heap" << endl;
     }
     else{
-      *parentHold = findAddSpot();
+      findAddSpot(parentHold);
+      cout << "here" << endl;
+      if(parentHold !=NULL){
+
+parentHold->dataItem.getAccount( patientName, medicalCode, patientGender );
+cout << patientName;
+
+      }
+else{ cout << "BOOOOOO" << endl;}
+
+      cout << "found add spot" << endl;
       if(parentHold->left == NULL ){
         parentHold->left =new HeapNode<KeyType, DataType>(newKey, newData,parentHold,NULL,NULL);
+        cout << "added to left" << endl;
         trickleUp(parentHold->left);
+        cout << "upped" << endl;
       }
       else{
         parentHold->right =new HeapNode<KeyType, DataType>(newKey, newData,parentHold,NULL,NULL);
+        cout << "added to right" << endl;
         trickleUp(parentHold->right);
       }
       
     }
+    cout << "added" << endl;
    }
+
+
+template<typename KeyType, typename DataType>
+  bool HeapClass<KeyType, DataType>::findAddSpot(HeapNode<KeyType, DataType>*& holdNode)
+  {
+     HeapNode<KeyType, DataType> *hold;
+    char patientName[ 30 ], medicalCode[ MAX_STR_LEN ];
+    char patientGender;
+
+     if(!isEmpty())
+     {
+      cout << "not empty" << endl;
+      if(getLeftHeight() == getRightHeight()){
+        cout << "equal" << endl;
+        //return far left's left
+        hold = rootNode;
+        rootNode->dataItem.getAccount( patientName, medicalCode, patientGender );
+          cout << patientName;
+
+        while(hold->left != NULL){
+          
+          hold = hold->left;
+        }
+        hold->dataItem.getAccount( patientName, medicalCode, patientGender );
+        cout << patientName;
+        holdNode = hold;
+
+      }
+      else{
+        cout << "not equal" << endl;
+        if(findAddHelper(0, rootNode, hold))
+        {
+          holdNode = hold;
+          cout << "+++++++++++++++" << endl;
+          return true;
+        }
+        else
+        {
+          return true;
+        }
+      }
+    }
+    else{
+      cout << "empty" << endl;
+      return false;
+    }
+    cout << "done finding" << endl;
+  }
+
+
+
+
+
+template<typename KeyType, typename DataType>
+  bool HeapClass<KeyType, DataType>::findAddHelper(int currentDepth, HeapNode<KeyType, DataType>* checkNode,  HeapNode<KeyType, DataType>*& hold)
+  {
+        char patientName[ 30 ], medicalCode[ MAX_STR_LEN ];
+    char patientGender;
+
+
+    if(checkNode != NULL){
+      if(checkNode->left == NULL || checkNode->right == NULL){
+        hold = checkNode;
+        return true;
+      }
+      else
+      {
+        if(findAddHelper(currentDepth+1, checkNode->left, hold))
+        {
+          return true;
+        }
+        else
+        {
+          return findAddHelper(currentDepth+1, checkNode->right, hold);
+        }
+      }
+
+    }
+    else
+    {
+      return false;
+    }
+
+
+/*
+    if(checkNode != NULL)
+    {
+        checkNode->dataItem.getAccount( patientName, medicalCode, patientGender );
+        cout << "---checking " << patientName << endl;
+        
+      if(currentDepth != getRightHeight()){
+        cout <<"same level " << endl;
+        if(findAddHelper(currentDepth+1, checkNode->left, hold))
+        {
+          return true;
+        }
+        else
+        {
+          return findAddHelper(currentDepth+1, checkNode->right, hold);
+        }
+      }
+      else
+      {
+        cout <<"not same level " << endl;
+        if (checkNode == NULL){
+          cout << "AHHHHHHHHHHHHHH" << endl;
+        }
+        if(checkNode->left == NULL || checkNode->right == NULL)
+        {
+          hold = checkNode;
+          cout <<"done with not same level " << endl;
+          return true;
+        }
+        else
+        {
+          return false;
+        }
+      }
+    }
+    else
+    {
+      return false;
+    }
+
+    */
+  }
+
+  template<typename KeyType, typename DataType>
+bool HeapClass<KeyType, DataType>::trickleUp(HeapNode<KeyType, DataType>* moveNode)
+{
+      char patientName[ 30 ], medicalCode[ MAX_STR_LEN ];
+    char patientGender;
+    moveNode->dataItem.getAccount( patientName, medicalCode, patientGender );
+        cout << patientName;
+
+  cout << "up!" << endl;
+  while(
+    //
+    //&& 
+    moveNode != rootNode
+    )
+  {
+    //swap
+    if(moveNode->keyItem > moveNode->parent->keyItem ){
+      cout << "swapping ";
+              moveNode->dataItem.getAccount( patientName, medicalCode, patientGender );
+          cout << patientName;
+          cout << " and ";
+          moveNode->parent->dataItem.getAccount( patientName, medicalCode, patientGender );
+          cout << patientName << endl;
+      swap(moveNode, moveNode->parent);
+    }
+      moveNode = moveNode->parent;
+
+  }
+  cout << "done up!" << endl;
+}
+
+  template<typename KeyType, typename DataType>
+bool HeapClass<KeyType, DataType>::swap(HeapNode<KeyType, DataType>* lhNode, HeapNode<KeyType, DataType>* rhNode)
+{
+         KeyType keyHold;
+       DataType dataHold;
+  if(rhNode != NULL && lhNode != NULL){
+    keyHold = rhNode->keyItem;
+    dataHold = rhNode->dataItem;
+
+    rhNode->keyItem = lhNode->keyItem;
+    rhNode->dataItem = lhNode->dataItem;
+
+    lhNode->dataItem = dataHold;
+    lhNode->keyItem = keyHold;
+
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+/////////////////////////////////delete functions////////////////////////////////
+  
+
 
 template<typename KeyType, typename DataType>
 bool HeapClass<KeyType, DataType>::removeItem
@@ -232,6 +434,8 @@ bool HeapClass<KeyType, DataType>::removeItem
     
    }
 
+
+
 template<typename KeyType, typename DataType>
    bool HeapClass<KeyType, DataType>::findPromotion(HeapNode<KeyType, DataType>*& moveNode)
 {
@@ -240,32 +444,18 @@ template<typename KeyType, typename DataType>
 }
 
 
+
 template<typename KeyType, typename DataType>
 bool HeapClass<KeyType, DataType>::trickleDown(HeapNode<KeyType, DataType>* moveNode)
 {
-  while(moveNode->keyItem > moveNode->parent->keyItem)
-  {
-    //swap
-  }
-}
-
-template<typename KeyType, typename DataType>
-bool HeapClass<KeyType, DataType>::trickleUp(HeapNode<KeyType, DataType>* moveNode)
-{
 
 }
 
-template<typename KeyType, typename DataType>
-  HeapNode<KeyType, DataType> HeapClass<KeyType, DataType>::findAddSpot()
-  {
-      if(getLeftHeight() == getRightHeight()){
-        //return far left's left
-      }
-      else{
 
-      }
-  }
-  
+
+
+
+
 
 
 
