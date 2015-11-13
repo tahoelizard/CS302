@@ -278,9 +278,10 @@ bool HeapClass<KeyType, DataType>::trickleUp(HeapNode<KeyType, DataType>* moveNo
   template<typename KeyType, typename DataType>
 bool HeapClass<KeyType, DataType>::swap(HeapNode<KeyType, DataType>* lhNode, HeapNode<KeyType, DataType>* rhNode)
 {
-         KeyType keyHold;
-       DataType dataHold;
-  if(rhNode != NULL && lhNode != NULL){
+  KeyType keyHold;
+  DataType dataHold;
+  if(rhNode != NULL && lhNode != NULL)
+  {
     keyHold = rhNode->keyItem;
     dataHold = rhNode->dataItem;
 
@@ -292,7 +293,8 @@ bool HeapClass<KeyType, DataType>::swap(HeapNode<KeyType, DataType>* lhNode, Hea
 
     return true;
   }
-  else{
+  else
+  {
     return false;
   }
 }
@@ -313,13 +315,16 @@ bool HeapClass<KeyType, DataType>::removeItem
     
     if(!isEmpty()){
 
-      findPromotion(hold);
+      findPromotion(1,rootNode,hold);
       if(hold == rootNode){
         delete rootNode;
         rootNode = NULL;
       }
       else
       {
+        returnedKeyItem = rootNode->keyItem ;
+        returnedDataItem = rootNode->dataItem;
+
         rootNode->dataItem = hold->dataItem;
         rootNode->keyItem = hold->keyItem;
 
@@ -351,10 +356,48 @@ bool HeapClass<KeyType, DataType>::removeItem
 
 
 template<typename KeyType, typename DataType>
-   bool HeapClass<KeyType, DataType>::findPromotion(HeapNode<KeyType, DataType>*& moveNode)
+   bool HeapClass<KeyType, DataType>::findPromotion(int currentDepth, HeapNode<KeyType, DataType>* checkNode,  HeapNode<KeyType, DataType>*& hold)
 {
-  //stub
-  return false;
+   if(checkNode != NULL)
+    {   
+      if(currentDepth != getRightHeight())
+      {
+        if(findPromotion(currentDepth+1, checkNode->left, hold))
+        {
+          return true;
+        }
+        else
+        {
+          return findPromotion(currentDepth+1, checkNode->right, hold);
+        }
+      }
+      else
+      {
+        if(checkNode->left == NULL && checkNode->right == NULL)
+        {
+          return false;
+        }
+
+        else
+        {
+          if(checkNode->left != NULL){
+            hold = checkNode->left;
+            if(checkNode->right != NULL)
+            {
+              hold = checkNode->right;
+            }
+            else{
+
+            }
+          }
+          
+        }
+      }
+    }
+    else
+    {
+      return false;
+    }
 }
 
 
@@ -362,14 +405,41 @@ template<typename KeyType, typename DataType>
 template<typename KeyType, typename DataType>
 bool HeapClass<KeyType, DataType>::trickleDown(HeapNode<KeyType, DataType>* moveNode)
 {
+  bool check = true;
+  while(check)
+  {
+    //moveNode->right != NULL && moveNode->left!= NULL && moveNode != NULL && 
+    if(moveNode->left->keyItem < moveNode->right->keyItem)
+    {
+         if(moveNode->keyItem > moveNode->left->keyItem){
+        swap(moveNode, moveNode->left);
+        moveNode= moveNode->left;
+      }
+      else if(moveNode->keyItem > moveNode->right->keyItem){
+        swap(moveNode, moveNode->right);
+        moveNode = moveNode->right;
+      }
+      else{
+        check = false; 
+      }
+    }
+    else{
 
+    if(moveNode->keyItem > moveNode->right->keyItem){
+      swap(moveNode, moveNode->right);
+      moveNode = moveNode->right;
+    }
+           else if(moveNode->keyItem > moveNode->left->keyItem){
+        swap(moveNode, moveNode->left);
+        moveNode= moveNode->left;
+        }
+    else{
+      check = false; 
+    }
+    }
+
+  }
 }
-
-
-
-
-
-
 
 
 

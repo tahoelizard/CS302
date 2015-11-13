@@ -107,7 +107,7 @@ class HeapClass
 
        bool trickleDown(HeapNode<KeyType, DataType>* moveNode);
        bool trickleUp(HeapNode<KeyType, DataType>* moveNode);
-       bool findPromotion(HeapNode<KeyType, DataType>*& moveNode);
+   bool findPromotion(int currentDepth, HeapNode<KeyType, DataType>* checkNode,  HeapNode<KeyType, DataType>*& hold);
        bool findAddSpot(HeapNode<KeyType, DataType>*& holdNode);
   bool findAddHelper(int currentDepth, HeapNode<KeyType, DataType>* checkNode,  HeapNode<KeyType, DataType>*& hold);
 bool swap(HeapNode<KeyType, DataType>* lhNode, HeapNode<KeyType, DataType>* rhNode);
