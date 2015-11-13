@@ -164,94 +164,62 @@ void HeapClass<KeyType, DataType>::addItem
         const DataType &newData
        )
    {
-    // assignment component
-//cout << " starting to add" << endl;
-    char patientName[ 30 ], medicalCode[ MAX_STR_LEN ];
-    char patientGender;
+
     HeapNode<KeyType, DataType> *parentHold;
-
-
-
-    if(isEmpty()){
-      rootNode = new HeapNode<KeyType, DataType>(newKey, newData,NULL,NULL,NULL);
-     // cout << "added root to empty heap" << endl;
-    }
-    else{
-      findAddSpot(parentHold);
-      //cout << "here" << endl;
-      if(parentHold !=NULL){
-
-parentHold->dataItem.getAccount( patientName, medicalCode, patientGender );
-//cout << patientName;
-
-      }
-else{ //cout << "BOOOOOO" << endl;
-}
-
-    //  cout << "found add spot" << endl;
-      if(parentHold->left == NULL ){
-        parentHold->left =new HeapNode<KeyType, DataType>(newKey, newData,parentHold,NULL,NULL);
-     //   cout << "added to left" << endl;
-        trickleUp(parentHold->left);
-      //  cout << "upped" << endl;
+      if(isEmpty())
+      {
+        rootNode = new HeapNode<KeyType, DataType>(newKey, newData,NULL,NULL,NULL);
       }
       else{
-        parentHold->right =new HeapNode<KeyType, DataType>(newKey, newData,parentHold,NULL,NULL);
-      //  cout << "added to right" << endl;
-        trickleUp(parentHold->right);
+        findAddSpot(parentHold);
+        if(parentHold->left == NULL )
+        {
+          parentHold->left =new HeapNode<KeyType, DataType>(newKey, newData,parentHold,NULL,NULL);
+          trickleUp(parentHold->left);
+        }
+        else
+        {
+          parentHold->right =new HeapNode<KeyType, DataType>(newKey, newData,parentHold,NULL,NULL);
+          trickleUp(parentHold->right);
+        }  
       }
-      
-    }
-   // cout << "added" << endl;
    }
 
 
 template<typename KeyType, typename DataType>
   bool HeapClass<KeyType, DataType>::findAddSpot(HeapNode<KeyType, DataType>*& holdNode)
+{
+    HeapNode<KeyType, DataType> *hold;
+
+  if(!isEmpty())
   {
-     HeapNode<KeyType, DataType> *hold;
-    char patientName[ 30 ], medicalCode[ MAX_STR_LEN ];
-    char patientGender;
-
-     if(!isEmpty())
-     {
-     // cout << "not empty" << endl;
-      if(getLeftHeight() == getRightHeight()){
-       // cout << "equal" << endl;
-        //return far left's left
-        hold = rootNode;
-        rootNode->dataItem.getAccount( patientName, medicalCode, patientGender );
-         // cout << patientName;
-
-        while(hold->left != NULL){
-          
-          hold = hold->left;
-        }
-        hold->dataItem.getAccount( patientName, medicalCode, patientGender );
-       // cout << patientName;
+    if(getLeftHeight() == getRightHeight())
+    {
+      hold = rootNode;
+      while(hold->left != NULL)
+      {
+        hold = hold->left;
+      }
+      holdNode = hold;
+    }
+    else
+    {
+      if(findAddHelper(1, rootNode, hold))
+      {
         holdNode = hold;
-
+        return true;
       }
-      else{
-       // cout << "not equal" << endl;
-        if(findAddHelper(1, rootNode, hold))
-        {
-          holdNode = hold;
-          //cout << "+++++++++++++++" << endl;
-          return true;
-        }
-        else
-        {
-          return true;
-        }
+      else
+      {
+        return true;
       }
     }
-    else{
-      //cout << "empty" << endl;
-      return false;
-    }
-   // cout << "done finding" << endl;
   }
+  else
+  {
+    return false;
+  }
+}
 
 
 
@@ -260,41 +228,10 @@ template<typename KeyType, typename DataType>
 template<typename KeyType, typename DataType>
   bool HeapClass<KeyType, DataType>::findAddHelper(int currentDepth, HeapNode<KeyType, DataType>* checkNode,  HeapNode<KeyType, DataType>*& hold)
   {
-        char patientName[ 30 ], medicalCode[ MAX_STR_LEN ];
-    char patientGender;
-
-/*
-    if(checkNode != NULL)
-    {
-      checkNode->dataItem.getAccount( patientName, medicalCode, patientGender );
-      cout << "---checking " << patientName << endl;
-        if(checkNode->left == NULL || checkNode->right == NULL){
-        hold = checkNode;
-        return true;
-        }
-        else
-        {
-          if(findAddHelper(currentDepth+1, checkNode->left, hold))
-          {
-            return true;
-          }
-          else
-          {
-            return findAddHelper(currentDepth+1, checkNode->right, hold);
-          }
-        }
-    }
-    else
-    {
-      return false;
-    }
-
-*/
-
     if(checkNode != NULL)
     {   
-      if(currentDepth != getRightHeight()){
-        //cout <<"same level " << endl;
+      if(currentDepth != getRightHeight())
+      {
         if(findAddHelper(currentDepth+1, checkNode->left, hold))
         {
           return true;
@@ -306,11 +243,9 @@ template<typename KeyType, typename DataType>
       }
       else
       {
-       // cout <<"not same level " << endl;
         if(checkNode->left == NULL || checkNode->right == NULL)
         {
           hold = checkNode;
-         // cout <<"done with not same level " << endl;
           return true;
         }
         else
@@ -327,35 +262,17 @@ template<typename KeyType, typename DataType>
     
   }
 
-  template<typename KeyType, typename DataType>
+template<typename KeyType, typename DataType>
 bool HeapClass<KeyType, DataType>::trickleUp(HeapNode<KeyType, DataType>* moveNode)
 {
-      char patientName[ 30 ], medicalCode[ MAX_STR_LEN ];
-    char patientGender;
-    moveNode->dataItem.getAccount( patientName, medicalCode, patientGender );
-       // cout << patientName;
-
-  //cout << "up!" << endl;
-  while(
-    //
-    //&& 
-    moveNode != rootNode
-    )
+  while(moveNode != rootNode)
   {
-    //swap
-    if(moveNode->keyItem < moveNode->parent->keyItem ){
-      //cout << "swapping ";
-              moveNode->dataItem.getAccount( patientName, medicalCode, patientGender );
-         // cout << patientName;
-          //cout << " and ";
-          moveNode->parent->dataItem.getAccount( patientName, medicalCode, patientGender );
-          //cout << patientName << endl;
+    if(moveNode->keyItem < moveNode->parent->keyItem )
+    {
       swap(moveNode, moveNode->parent);
     }
-      moveNode = moveNode->parent;
-
+    moveNode = moveNode->parent;
   }
- // cout << "done up!" << endl;
 }
 
   template<typename KeyType, typename DataType>
