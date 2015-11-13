@@ -343,13 +343,13 @@ bool HeapClass<KeyType, DataType>::trickleUp(HeapNode<KeyType, DataType>* moveNo
     )
   {
     //swap
-    if(moveNode->keyItem > moveNode->parent->keyItem ){
+    if(moveNode->keyItem < moveNode->parent->keyItem ){
       //cout << "swapping ";
               moveNode->dataItem.getAccount( patientName, medicalCode, patientGender );
          // cout << patientName;
-         // cout << " and ";
+          //cout << " and ";
           moveNode->parent->dataItem.getAccount( patientName, medicalCode, patientGender );
-         // cout << patientName << endl;
+          //cout << patientName << endl;
       swap(moveNode, moveNode->parent);
     }
       moveNode = moveNode->parent;
