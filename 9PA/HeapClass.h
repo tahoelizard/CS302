@@ -6,7 +6,7 @@
  * 
  * @details Specifies all members of the Heap class
  *
- * @author Michael Leverington
+ * @author Michael Leverington and Elizabeth Johnson
  *
  * @version 1.00 (30 October 2015)
  *

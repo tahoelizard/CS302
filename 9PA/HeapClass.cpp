@@ -6,7 +6,7 @@
  * 
  * @details Implements all member actions for the HeapClass
  *
- * @author Michael Leverington
+ * @author Michael Leverington and Elizabeth Johnson
  *
  * @version 1.00 (30 October 2015)
  *
@@ -106,88 +106,56 @@ void HeapClass<KeyType, DataType>::clearTree
    }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/////////////////////////////////add functions////////////////////////////////
-
+//add functions///////////////////////////////////////////////////////////////
+/**
+ * @brief Add Item
+ *
+ * @details Adds the given info to the heap in the right location
+ *          
+ * @param In: Keytype of new item
+ * @param In: Datatype of new item
+ *
+ * @note None
+ */
 template<typename KeyType, typename DataType>
 void HeapClass<KeyType, DataType>::addItem
        ( 
         const KeyType &newKey,
         const DataType &newData
        )
-   {
+{
 
-    HeapNode<KeyType, DataType> *parentHold;
-      if(isEmpty())
-      {
-        rootNode = new HeapNode<KeyType, DataType>(newKey, newData,NULL,NULL,NULL);
-      }
-      else{
-        findAddSpot(parentHold);
-        if(parentHold->left == NULL )
-        {
-          parentHold->left =new HeapNode<KeyType, DataType>(newKey, newData,parentHold,NULL,NULL);
-          trickleUp(parentHold->left);
-        }
-        else
-        {
-          parentHold->right =new HeapNode<KeyType, DataType>(newKey, newData,parentHold,NULL,NULL);
-          trickleUp(parentHold->right);
-        }  
-      }
-   }
+  HeapNode<KeyType, DataType> *parentHold;
+  if(isEmpty())
+  {
+    rootNode = new HeapNode<KeyType, DataType>(newKey, newData,NULL,NULL,NULL);
+  }
+  else{
+    findAddSpot(parentHold);
+    if(parentHold->left == NULL )
+    {
+      parentHold->left =new HeapNode<KeyType, DataType>(newKey, newData,parentHold,NULL,NULL);
+      trickleUp(parentHold->left);
+    }
+    else
+    {
+      parentHold->right =new HeapNode<KeyType, DataType>(newKey, newData,parentHold,NULL,NULL);
+      trickleUp(parentHold->right);
+    }  
+  }
+}
 
-
+/**
+ * @brief Find Add Spot
+ *
+ * @details Finds proper spot to add a new item
+ *          
+ * @param in: HeapNode to hold resulting location
+ *
+ * @note Relies on findAddHelper
+ */
 template<typename KeyType, typename DataType>
-  bool HeapClass<KeyType, DataType>::findAddSpot(HeapNode<KeyType, DataType>*& holdNode)
+bool HeapClass<KeyType, DataType>::findAddSpot(HeapNode<KeyType, DataType>*& holdNode)
 {
     HeapNode<KeyType, DataType> *hold;
 
@@ -221,47 +189,61 @@ template<typename KeyType, typename DataType>
   }
 }
 
-
-
-
-
+/**
+ * @brief Find Add Helper
+ *
+ * @details Recursively searches for the next empty spot in the heap
+ *          
+ * @param in: int to track depth
+ * @param in: HeapNode of the next place to check
+ * @param in: HeapNode to hold resulting location
+ *
+ * @note None
+ */
 template<typename KeyType, typename DataType>
-  bool HeapClass<KeyType, DataType>::findAddHelper(int currentDepth, HeapNode<KeyType, DataType>* checkNode,  HeapNode<KeyType, DataType>*& hold)
-  {
-    if(checkNode != NULL)
-    {   
-      if(currentDepth != getRightHeight())
+bool HeapClass<KeyType, DataType>::findAddHelper(int currentDepth, HeapNode<KeyType, DataType>* checkNode,  HeapNode<KeyType, DataType>*& hold)
+{
+  if(checkNode != NULL)
+  {   
+    if(currentDepth != getRightHeight())
+    {
+      if(findAddHelper(currentDepth+1, checkNode->left, hold))
       {
-        if(findAddHelper(currentDepth+1, checkNode->left, hold))
-        {
-          return true;
-        }
-        else
-        {
-          return findAddHelper(currentDepth+1, checkNode->right, hold);
-        }
+        return true;
       }
       else
       {
-        if(checkNode->left == NULL || checkNode->right == NULL)
-        {
-          hold = checkNode;
-          return true;
-        }
-        else
-        {
-          return false;
-        }
+        return findAddHelper(currentDepth+1, checkNode->right, hold);
       }
     }
     else
     {
-      return false;
+      if(checkNode->left == NULL || checkNode->right == NULL)
+      {
+        hold = checkNode;
+        return true;
+      }
+      else
+      {
+        return false;
+      }
     }
-
-    
   }
+  else
+  {
+    return false;
+  }
+}
 
+/**
+ * @brief Trickle Up 
+ *
+ * @details Pushes given node to its proper place
+ *          
+ * @param in: HeapNode to push
+ *
+ * @note None
+ */
 template<typename KeyType, typename DataType>
 bool HeapClass<KeyType, DataType>::trickleUp(HeapNode<KeyType, DataType>* moveNode)
 {
@@ -275,7 +257,17 @@ bool HeapClass<KeyType, DataType>::trickleUp(HeapNode<KeyType, DataType>* moveNo
   }
 }
 
-  template<typename KeyType, typename DataType>
+/**
+ * @brief Swap
+ *
+ * @details Swaps the data of two nodes
+ *          
+ * @param in: left hand HeapNode
+ * @param in: right hand HeapNode
+ *
+ * @note None
+ */
+template<typename KeyType, typename DataType>
 bool HeapClass<KeyType, DataType>::swap(HeapNode<KeyType, DataType>* lhNode, HeapNode<KeyType, DataType>* rhNode)
 {
   KeyType keyHold;
@@ -298,10 +290,18 @@ bool HeapClass<KeyType, DataType>::swap(HeapNode<KeyType, DataType>* lhNode, Hea
     return false;
   }
 }
-/////////////////////////////////delete functions////////////////////////////////
-  
 
-
+//delete functions///////////////////////////////////////////////////////////////
+/**
+ * @brief Remove Item
+ *
+ * @details Removes data from root node
+ *          
+ * @param in: Datatype to store the removed data
+ * @param in: Keytype to store the removed key
+ *
+ * @note Relies on findPromotion trickle Down
+ */
 template<typename KeyType, typename DataType>
 bool HeapClass<KeyType, DataType>::removeItem
        ( 
@@ -313,10 +313,12 @@ bool HeapClass<KeyType, DataType>::removeItem
     HeapNode<KeyType, DataType> *hold;
     HeapNode<KeyType, DataType> *parentHold;
     
-    if(!isEmpty()){
+    if(!isEmpty())
+    {
 
       findPromotion(1,rootNode,hold);
-      if(hold == rootNode){
+      if(hold == rootNode)
+      {
         delete rootNode;
         rootNode = NULL;
       }
@@ -354,7 +356,17 @@ bool HeapClass<KeyType, DataType>::removeItem
    }
 
 
-
+/**
+ * @brief Find Promotion 
+ *
+ * @details searches for the last item to promote
+ *          
+ * @param in: int to track depth
+ * @param in: HeapNode of the next place to check
+ * @param in: HeapNode to hold resulting location
+ *
+ * @note None
+ */
 template<typename KeyType, typename DataType>
    bool HeapClass<KeyType, DataType>::findPromotion(int currentDepth, HeapNode<KeyType, DataType>* checkNode,  HeapNode<KeyType, DataType>*& hold)
 {
@@ -380,7 +392,8 @@ template<typename KeyType, typename DataType>
 
         else
         {
-          if(checkNode->left != NULL){
+          if(checkNode->left != NULL)
+          {
             hold = checkNode->left;
             if(checkNode->right != NULL)
             {
@@ -401,17 +414,25 @@ template<typename KeyType, typename DataType>
 }
 
 
-
+/**
+ * @brief Trickle Down
+ *
+ * @details Pushes given node down to the proper place
+ *          
+ * @param in: HeapNode of the node to push
+ *
+ * @note None
+ */
 template<typename KeyType, typename DataType>
 bool HeapClass<KeyType, DataType>::trickleDown(HeapNode<KeyType, DataType>* moveNode)
 {
   bool check = true;
   while(check)
   {
-    //moveNode->right != NULL && moveNode->left!= NULL && moveNode != NULL && 
     if(moveNode->left->keyItem < moveNode->right->keyItem)
     {
-         if(moveNode->keyItem > moveNode->left->keyItem){
+      if(moveNode->keyItem > moveNode->left->keyItem)
+      {
         swap(moveNode, moveNode->left);
         moveNode= moveNode->left;
       }
@@ -423,72 +444,27 @@ bool HeapClass<KeyType, DataType>::trickleDown(HeapNode<KeyType, DataType>* move
         check = false; 
       }
     }
-    else{
+    else
+    {
 
-    if(moveNode->keyItem > moveNode->right->keyItem){
-      swap(moveNode, moveNode->right);
-      moveNode = moveNode->right;
-    }
-           else if(moveNode->keyItem > moveNode->left->keyItem){
+      if(moveNode->keyItem > moveNode->right->keyItem)
+      {
+        swap(moveNode, moveNode->right);
+        moveNode = moveNode->right;
+      }
+      else if(moveNode->keyItem > moveNode->left->keyItem)
+      {
         swap(moveNode, moveNode->left);
         moveNode= moveNode->left;
-        }
-    else{
-      check = false; 
-    }
+      }
+      else
+      {
+        check = false; 
+      }
     }
 
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
