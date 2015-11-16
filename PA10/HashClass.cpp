@@ -26,6 +26,7 @@
 
 using namespace std;
 
+
 // Class Implementation  //////////////////////////////////////////////////////
 
 template<typename DataType>
@@ -83,7 +84,21 @@ void HashClass<DataType>::setTableLength
         int newTableLength
        )
    {
-    // to be implemented
+    tableLength = newTableLength;
+    if (list.getCapacity() != tableLength){
+      if(list.getCapacity() > tableLength)
+      {
+        list.shrink(list.getCapacity() - tableLength);
+      }
+      else{
+        list.grow(tableLength - list.getCapacity());
+      }
+    }
+    for(int i = 0; i < tableLength; i++)
+    {
+      cout << "making " << i  << "NULL" << endl;
+      list[i] = NULL;
+    }
    }
 
 template <typename DataType>
@@ -92,7 +107,7 @@ void HashClass<DataType>::setHashLetterCount
         int newHashLetterCount
        )
    {
-    // to be implemented
+    hashLetterCount = newHashLetterCount;
    }
 
 template <typename DataType>
@@ -101,11 +116,45 @@ bool HashClass<DataType>::addItem
         const DataType &newData 
        )
    {
-    // to be implemented
-
+    char patientName[ STD_STR_LEN ], medicalCode[ STD_STR_LEN ];
+    char patientGender;
+    cout << tableLength << endl;
+    cout << "starting add" << endl;
+    int hold;
+    DataType holdNew;
+    holdNew = newData; 
+    hold = holdNew.hash(hashLetterCount, tableLength);
+    cout << "hold is " << hold << endl;
+    showStructure();
+/*
+    for(int i = 0; i < tableLength; i++){
+      list[i] = new HashNode<DataType>(holdNew, NULL);
+      cout << "added " << i << endl;
+    }
+    for(int j = 0; j < tableLength; j++){
+      list[j]->data.getAccount( patientName, medicalCode, patientGender ) ;
+      //cout << patientName << endl;
+    }
+*/
+   // showStructure();
+    //cout << ":(" << endl;
+    if (list[hold] == NULL){
+      cout << "boop1" << endl;
+      list[hold] = new HashNode<DataType>(holdNew, NULL);
+    }
+    else{
+      cout << "boop2" << endl;
+      //list[hold]->data.getAccount( patientName, medicalCode, patientGender ) ;
+    // cout << patientName << "is already there" << endl;
+      
+      list[hold]->nextPtr = new HashNode<DataType>(holdNew, NULL);
+    }
+   // cout << "boop" << endl;
+    //
     return false;
+  
    }
-
+  
 template <typename DataType>
 bool HashClass<DataType>::findItem
        ( 
@@ -134,10 +183,23 @@ bool HashClass<DataType>::isEmpty
         // no parameters
        ) const
    {
-    // to be implemented
+    bool flag = true; 
+    int index = 0; 
+    while(flag && index < tableLength)
+    {
+      if(list[index] != NULL){
+        flag = false;
+      }
+      index++;
+    }
 
-    return false;
+    return flag;
    }
+template<typename DataType>
+void HashClass<DataType>::clearList()
+{
+
+}
 
 template<typename DataType>
 double HashClass<DataType>::getChainLengthMean
@@ -151,7 +213,7 @@ double HashClass<DataType>::getChainLengthMean
    }
 
 template<typename DataType>
-double HashClass<DataType>::getChainLengthMode
+double HashClass<DataType>::getChainLengthMedian
        ( 
         // no parameters
        ) const
@@ -167,6 +229,26 @@ void HashClass<DataType>::showStructure
        ) const
    {
     // to be implemented
+char patientName[ STD_STR_LEN ], medicalCode[ STD_STR_LEN ];
+    char patientGender;
+
+
+    for(int i = 0; i < tableLength; i++)
+    {
+
+      if(list[i] != NULL)
+      {
+        list[i]->data.getAccount( patientName, medicalCode, patientGender );
+        cout <<"[ " << patientName << " ]" << endl;
+      }
+      else
+      {
+        cout << "NULL" << endl;
+      }
+    }
+    
+    
+  
    }
 
 template<typename DataType>

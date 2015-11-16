@@ -76,7 +76,7 @@ class HashClass
        bool isEmpty() const;
        void clearList();
        double getChainLengthMean() const;
-       double getChainLengthMode() const;
+       double getChainLengthMedian() const;
        void showStructure() const;
 
     private:
