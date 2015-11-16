@@ -146,8 +146,6 @@ bool HashClass<DataType>::findItem
         const DataType &dataItem
        ) const
    {
-    // to be implemented
-
  DataType holdFind;  
  holdFind = dataItem; 
  int hold;
@@ -179,9 +177,49 @@ bool HashClass<DataType>::removeItem
         const DataType &dataItem 
        )
    {
-    // to be implemented
+    DataType holdFind;  
+ holdFind = dataItem; 
+ int hold;
+ HashNode<DataType> * holdNext;
+ HashNode<DataType> * holdNextParent =NULL;
+    hold = holdFind.hash(hashLetterCount, tableLength);
+char patientName[ STD_STR_LEN ], medicalCode[ STD_STR_LEN ];
+    char patientGender;
+    if(findItem(dataItem)){
+      holdNext = list[hold];
+        while(holdNext != NULL)
+        {
+          if (holdNext->data.compareTo(holdFind) == 0)
+          {
+            holdNext->data.getAccount( patientName, medicalCode, patientGender );
+        cout <<"found  " << patientName ;
+            if(holdNextParent == NULL){
+              delete holdNext;
+              holdNext = NULL;
+              return true;
+            }
+            if(holdNextParent != NULL && holdNext->nextPtr == NULL){
+              delete holdNextParent->nextPtr;
+              holdNextParent->nextPtr = NULL;
+              return true;
+            }
+            if(holdNextParent != NULL && holdNext->nextPtr != NULL){
+              holdNextParent->nextPtr = holdNext->nextPtr;
+              delete holdNext;
+              holdNext = NULL;
+              return true;
+            }
 
-    return false;
+
+            
+          }
+          holdNextParent = holdNext;
+          holdNext = holdNext->nextPtr;
+        }
+    }
+    else{
+      return false;
+    }
    }
 
 template<typename DataType>
