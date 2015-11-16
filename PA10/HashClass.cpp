@@ -96,7 +96,6 @@ void HashClass<DataType>::setTableLength
     }
     for(int i = 0; i < tableLength; i++)
     {
-      cout << "making " << i  << "NULL" << endl;
       list[i] = NULL;
     }
    }
@@ -118,41 +117,27 @@ bool HashClass<DataType>::addItem
    {
     char patientName[ STD_STR_LEN ], medicalCode[ STD_STR_LEN ];
     char patientGender;
-    cout << tableLength << endl;
-    cout << "starting add" << endl;
+    HashNode<DataType> * holdNext;
     int hold;
     DataType holdNew;
+
     holdNew = newData; 
     hold = holdNew.hash(hashLetterCount, tableLength);
-    cout << "hold is " << hold << endl;
-    showStructure();
-/*
-    for(int i = 0; i < tableLength; i++){
-      list[i] = new HashNode<DataType>(holdNew, NULL);
-      cout << "added " << i << endl;
-    }
-    for(int j = 0; j < tableLength; j++){
-      list[j]->data.getAccount( patientName, medicalCode, patientGender ) ;
-      //cout << patientName << endl;
-    }
-*/
-   // showStructure();
-    //cout << ":(" << endl;
+
     if (list[hold] == NULL){
-      cout << "boop1" << endl;
       list[hold] = new HashNode<DataType>(holdNew, NULL);
+      return true;
     }
     else{
-      cout << "boop2" << endl;
-      //list[hold]->data.getAccount( patientName, medicalCode, patientGender ) ;
-    // cout << patientName << "is already there" << endl;
-      
-      list[hold]->nextPtr = new HashNode<DataType>(holdNew, NULL);
+      holdNext = list[hold];
+      while(holdNext->nextPtr != NULL){
+        holdNext = holdNext->nextPtr;
+      }
+      holdNext->nextPtr = new HashNode<DataType>(holdNew, NULL);
+      return true;
     }
-   // cout << "boop" << endl;
-    //
-    return false;
-  
+    
+    
    }
   
 template <typename DataType>
@@ -163,7 +148,29 @@ bool HashClass<DataType>::findItem
    {
     // to be implemented
 
-    return false;
+ DataType holdFind;  
+ holdFind = dataItem; 
+ int hold;
+ HashNode<DataType> * holdNext;
+    hold = holdFind.hash(hashLetterCount, tableLength);
+
+    if(list[hold] != NULL)
+    {
+        holdNext = list[hold];
+        while(holdNext != NULL)
+        {
+          if (holdNext->data.compareTo(holdFind) == 0)
+          {
+            return true; 
+          }
+          holdNext = holdNext->nextPtr;
+        }
+        return false;
+      }
+    else
+    {
+      return false;
+    }
    }
 
 template <typename DataType>
@@ -198,7 +205,7 @@ bool HashClass<DataType>::isEmpty
 template<typename DataType>
 void HashClass<DataType>::clearList()
 {
-
+ 
 }
 
 template<typename DataType>
@@ -231,15 +238,23 @@ void HashClass<DataType>::showStructure
     // to be implemented
 char patientName[ STD_STR_LEN ], medicalCode[ STD_STR_LEN ];
     char patientGender;
-
+HashNode<DataType> * holdNext;
 
     for(int i = 0; i < tableLength; i++)
     {
 
       if(list[i] != NULL)
       {
-        list[i]->data.getAccount( patientName, medicalCode, patientGender );
-        cout <<"[ " << patientName << " ]" << endl;
+      holdNext = list[i];
+      while(holdNext != NULL){
+
+        holdNext->data.getAccount( patientName, medicalCode, patientGender );
+        cout <<"[ " << patientName << " ] " ;
+      
+        holdNext = holdNext->nextPtr;
+      }
+      cout << endl;
+
       }
       else
       {
