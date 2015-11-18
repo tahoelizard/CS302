@@ -305,13 +305,15 @@ void HashClass<DataType>::clearList()
     {
       if(list[i] != NULL)
       {
-      holdNext = list[i];
-      while(holdNext != NULL){
-        holdNextParent = holdNext;
-        holdNext = holdNext->nextPtr;
-        delete holdNextParent;
-        holdNextParent = NULL;
-      }
+        holdNext = list[i];
+        while(holdNext != NULL)
+        {
+          holdNextParent = holdNext;
+          holdNext = holdNext->nextPtr;
+          delete holdNextParent;
+          holdNextParent = NULL;
+        }
+        list[i] = NULL;
 
       }
     }
@@ -405,6 +407,7 @@ HashNode<DataType> * holdNext;
 
       if(list[i] != NULL)
       {
+
       holdNext = list[i];
       while(holdNext != NULL){
 
