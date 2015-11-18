@@ -57,7 +57,37 @@ HashClass<DataType>::HashClass
      : tableLength( copied.tableLength ), 
        hashLetterCount( copied.hashLetterCount ), list( copied.tableLength )
    {
-    
+       HashNode<DataType> * holdNext;
+    HashNode<DataType> * holdNextParent =NULL;
+    setTableLength(copied.tableLength);
+    setHashLetterCount(copied.hashLetterCount);
+    for(int i = 0; i < tableLength; i++)
+    {
+      if(copied.list[i] == NULL){
+        list[i] = NULL;
+      }
+      else{
+        holdNext = copied.list[i];
+        holdNextParent = NULL;
+        while(holdNext != NULL)
+        {
+          if(holdNextParent == NULL){
+            list[i] = new HashNode<DataType>(holdNext->data, NULL);
+        holdNextParent = list[i];
+          }
+
+          else{
+            holdNextParent->nextPtr = new HashNode<DataType>(holdNext->data, NULL);;
+
+        holdNextParent = holdNextParent->nextPtr;
+          }
+
+          
+          holdNext = holdNext->nextPtr;
+
+        }
+      }
+    }
    }
 
 template<typename DataType>
@@ -74,7 +104,6 @@ const HashClass<DataType>& HashClass<DataType>:: operator =
                                               ( const HashClass &rhHashTable )
    {
     HashNode<DataType> * holdNext;
-    HashNode<DataType> * holdCur;
     HashNode<DataType> * holdNextParent =NULL;
     setTableLength(rhHashTable.tableLength);
     setHashLetterCount(rhHashTable.hashLetterCount);
@@ -85,16 +114,23 @@ const HashClass<DataType>& HashClass<DataType>:: operator =
       }
       else{
         holdNext = rhHashTable.list[i];
-        holdCur = list[i];
+        holdNextParent = NULL;
         while(holdNext != NULL)
         {
-          holdCur = new HashNode<DataType>(holdNext->data, NULL);
-
-          if(holdNextParent != NULL){
-            holdNextParent->nextPtr = holdCur;
+          if(holdNextParent == NULL){
+            list[i] = new HashNode<DataType>(holdNext->data, NULL);
+        holdNextParent = list[i];
           }
-          holdNextParent = holdCur;
+
+          else{
+            holdNextParent->nextPtr = new HashNode<DataType>(holdNext->data, NULL);;
+
+        holdNextParent = holdNextParent->nextPtr;
+          }
+
+          
           holdNext = holdNext->nextPtr;
+
         }
       }
     }
