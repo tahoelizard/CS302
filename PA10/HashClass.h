@@ -77,7 +77,9 @@ class HashClass
        void clearList();
        double getChainLengthMean() const;
        double getChainLengthMedian() const;
+       int getChainLength(HashNode<DataType>* startPoint) const;
        void showStructure() const;
+       bool sortArray(int[]) const;
 
     private:
 

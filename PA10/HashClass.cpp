@@ -57,7 +57,7 @@ HashClass<DataType>::HashClass
      : tableLength( copied.tableLength ), 
        hashLetterCount( copied.hashLetterCount ), list( copied.tableLength )
    {
-    // to be implemented
+    
    }
 
 template<typename DataType>
@@ -73,7 +73,31 @@ template <typename DataType>
 const HashClass<DataType>& HashClass<DataType>:: operator = 
                                               ( const HashClass &rhHashTable )
    {
-    // to be implemented
+    HashNode<DataType> * holdNext;
+    HashNode<DataType> * holdCur;
+    HashNode<DataType> * holdNextParent =NULL;
+    setTableLength(rhHashTable.tableLength);
+    setHashLetterCount(rhHashTable.hashLetterCount);
+    for(int i = 0; i < tableLength; i++)
+    {
+      if(rhHashTable.list[i] == NULL){
+        list[i] = NULL;
+      }
+      else{
+        holdNext = rhHashTable.list[i];
+        holdCur = list[i];
+        while(holdNext != NULL)
+        {
+          holdCur = new HashNode<DataType>(holdNext->data, NULL);
+
+          if(holdNextParent != NULL){
+            holdNextParent->nextPtr = holdCur;
+          }
+          holdNextParent = holdCur;
+          holdNext = holdNext->nextPtr;
+        }
+      }
+    }
 
     return *this;
    }
@@ -183,16 +207,12 @@ bool HashClass<DataType>::removeItem
  HashNode<DataType> * holdNext;
  HashNode<DataType> * holdNextParent =NULL;
     hold = holdFind.hash(hashLetterCount, tableLength);
-char patientName[ STD_STR_LEN ], medicalCode[ STD_STR_LEN ];
-    char patientGender;
     if(findItem(dataItem)){
       holdNext = list[hold];
         while(holdNext != NULL)
         {
           if (holdNext->data.compareTo(holdFind) == 0)
           {
-            holdNext->data.getAccount( patientName, medicalCode, patientGender );
-        cout <<"found  " << patientName ;
             if(holdNextParent == NULL){
               delete holdNext;
               holdNext = NULL;
@@ -243,7 +263,38 @@ bool HashClass<DataType>::isEmpty
 template<typename DataType>
 void HashClass<DataType>::clearList()
 {
- 
+  HashNode<DataType> * holdNextParent = NULL;
+  HashNode<DataType> * holdNext = NULL;
+  for(int i = 0; i < tableLength; i++)
+    {
+      if(list[i] != NULL)
+      {
+      holdNext = list[i];
+      while(holdNext != NULL){
+        holdNextParent = holdNext;
+        holdNext = holdNext->nextPtr;
+        delete holdNextParent;
+        holdNextParent = NULL;
+      }
+
+      }
+    }
+}
+
+template<typename DataType>
+int HashClass<DataType>::getChainLength(HashNode<DataType>* startPoint) const
+{
+  int counter = 0;
+
+  HashNode<DataType> * holdNext;
+
+      holdNext = startPoint;
+      while(holdNext != NULL){
+        counter++;
+        holdNext = holdNext->nextPtr;
+      }
+      return counter;
+
 }
 
 template<typename DataType>
@@ -252,9 +303,16 @@ double HashClass<DataType>::getChainLengthMean
         // no parameters
        ) const
    {
-    // to be implemented
+    int hold = 0; 
+    int holdLength = tableLength; 
+    for (int i = 0; i < tableLength; i++)
+    {
+      hold = hold + getChainLength(list[i]);
+    }
 
-    return 0.0;
+    
+
+    return hold/holdLength;
    }
 
 template<typename DataType>
@@ -263,10 +321,38 @@ double HashClass<DataType>::getChainLengthMedian
         // no parameters
        ) const
    {
+    int* holder = new int[tableLength];
+    double dum;
     // to be implemented
-
-    return 0.0;
+    for (int i = 0; i < tableLength; i++)
+    {
+      holder[i]= getChainLength(list[i]);
+    }
+    sortArray(holder);
+    dum = holder[tableLength/2];
+    return dum;
    }
+
+
+template<typename DataType>
+bool HashClass<DataType>::sortArray(int* holder) const
+{
+
+  int dum;
+ for (int i = 0; i < tableLength; i++)
+    {
+      for (int j = i; j < tableLength; j++)
+      {
+        if(holder[i] > holder[j])
+        {
+           dum = holder[j];
+        holder[j] = holder[i];
+        holder[i] = dum; 
+        }
+       
+      }
+    }
+}
 
 template<typename DataType>
 void HashClass<DataType>::showStructure
