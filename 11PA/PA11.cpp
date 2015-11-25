@@ -46,8 +46,6 @@ bool getALine( istream &consoleIn, char &vert_1, int &wt, char &vert_2 );
 bool getLine( istream &consoleIn, char *str, int length, char stopChar );
 int findShortestDistanceBFS( GraphClass &graph, OrderedSetClass &path, 
                      char startVertex, char searchVertex, bool verbose );
-int findShortestDistanceBFShelper( GraphClass &graph, OrderedSetClass &path, 
-                     char startVertex, char searchVertex, bool verbose );
 
 // Main function implementation  //////////////////////////////////////////////
 
@@ -111,6 +109,10 @@ int findShortestDistanceBFS( GraphClass &graph, OrderedSetClass &path,
     char temp;
     int index = 0;
     int returnedVal = 0;
+    int minVal = 0;
+    int curWeight = 0;
+    OrderedSetClass tempPath;
+    OrderedSetClass holdPath;
 cout << "starting at " << startVertex << "****************" << endl;
     path += startVertex;
     graph.setVertexState( startVertex, true );
@@ -125,18 +127,39 @@ cout << "starting at " << startVertex << "****************" << endl;
     }
 
     index = 0; 
-cout << "-----start" << endl;
     while(graph.getNextVertex( startVertex, index, hold ))
     {
-returnedVal = findShortestDistanceBFS(graph, path, hold.vertexLetter, searchVertex, verbose);
-      if( returnedVal != 0){
-        
-        return hold.pathWeight + returnedVal;
+      returnedVal = findShortestDistanceBFS(graph, tempPath, hold.vertexLetter, searchVertex, verbose);
+      if( returnedVal > 0)
+      {
+        if(minVal == 0)
+        {
+          holdPath = tempPath;
+          cout << "new set:";
+          holdPath.dumpSet(); 
+          cout << "with val " << returnedVal << endl; 
+          curWeight = hold.pathWeight;
+          minVal = returnedVal;
+        }
+        else if(returnedVal < minVal)
+        {
+          cout << returnedVal << " is smaller than " << minVal << endl;
+          curWeight = hold.pathWeight;
+          holdPath = tempPath;
+          minVal = returnedVal;
+        }
       }
       cout << hold.vertexLetter << endl;
     }
-cout << "-----end" << endl;
-
+    if(minVal > 0){
+    cout << "adding ";
+    holdPath.dumpSet(); 
+    cout << " to ";
+    path.dumpSet(); 
+            path += holdPath;
+//INCORRECT: how do I add in the current weight?
+        return minVal + curWeight;
+}
     //case of nothing found here
     path.removeEndItem( temp );
     cout << "removed " << temp << endl;
@@ -144,25 +167,7 @@ cout << "-----end" << endl;
     return 0; // temporary stub return
    }
 
-   /**
- * @brief Finds shortest route between given vertices, 
- *        using breadth-first search     
- *
- * @details None
- *          
- * @param in: loaded graph
- * @param out: found solution path
- * @param in: start vertex
- * @param in: search vertex
- * @param in: verbose setting
- *
- * @note Initializes search, then calls and uses a helper function
- */
-int findShortestDistanceBFShelper( GraphClass &graph, OrderedSetClass &path, 
-                           char startVertex, char searchVertex, bool verbose )
-   {
-    return 0; // temporary stub return
-   }
+
 
 /**
  * @brief Gets a line of data from the stream for input to graph problem     
