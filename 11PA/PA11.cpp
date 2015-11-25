@@ -107,6 +107,38 @@ int  main()
 int findShortestDistanceBFS( GraphClass &graph, OrderedSetClass &path, 
                            char startVertex, char searchVertex, bool verbose )
    {
+    PathType hold;
+    char temp;
+    int index = 0;
+    int returnedVal = 0;
+
+    path += startVertex;
+
+    while(graph.getNextVertex( startVertex, index, hold ))
+    {
+      if( hold.vertexLetter == searchVertex)
+      {
+        path += hold.vertexLetter;
+        return hold.pathWeight;
+      }
+    }
+
+    index = 0; 
+cout << "-----start" << endl;
+    while(graph.getNextVertex( startVertex, index, hold ))
+    {
+returnedVal = findShortestDistanceBFS(graph, path, hold.vertexLetter, searchVertex, verbose);
+      if( returnedVal != 0){
+        
+        return hold.pathWeight + returnedVal;
+      }
+      cout << hold.vertexLetter << endl;
+    }
+cout << "-----end" << endl;
+
+    //case of nothing found here
+    path.removeEndItem( temp );
+    cout << "removed " << temp << endl;
     return 0; // temporary stub return
    }
 
