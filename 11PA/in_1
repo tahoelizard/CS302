@@ -1,0 +1,8 @@
+Graph Size: 5
+Start At: A
+End At: C
+A,6,B
+A,4,E
+B,4,C
+B,5,D
+#
