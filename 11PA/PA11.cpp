@@ -111,8 +111,9 @@ int findShortestDistanceBFS( GraphClass &graph, OrderedSetClass &path,
     char temp;
     int index = 0;
     int returnedVal = 0;
-
+cout << "starting at " << startVertex << "****************" << endl;
     path += startVertex;
+    graph.setVertexState( startVertex, true );
 
     while(graph.getNextVertex( startVertex, index, hold ))
     {
@@ -139,6 +140,7 @@ cout << "-----end" << endl;
     //case of nothing found here
     path.removeEndItem( temp );
     cout << "removed " << temp << endl;
+    graph.setVertexState( startVertex, false );
     return 0; // temporary stub return
    }
 
