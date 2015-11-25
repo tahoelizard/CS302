@@ -113,20 +113,21 @@ int findShortestDistanceBFS( GraphClass &graph, OrderedSetClass &path,
     int curWeight = 0;
     OrderedSetClass tempPath;
     OrderedSetClass holdPath;
-cout << "starting at " << startVertex << "****************" << endl;
-    path += startVertex;
+    
     graph.setVertexState( startVertex, true );
 
     while(graph.getNextVertex( startVertex, index, hold ))
     {
       if( hold.vertexLetter == searchVertex)
       {
+        path += startVertex;
         path += hold.vertexLetter;
         return hold.pathWeight;
       }
     }
 
     index = 0; 
+
     while(graph.getNextVertex( startVertex, index, hold ))
     {
       returnedVal = findShortestDistanceBFS(graph, tempPath, hold.vertexLetter, searchVertex, verbose);
@@ -135,34 +136,31 @@ cout << "starting at " << startVertex << "****************" << endl;
         if(minVal == 0)
         {
           holdPath = tempPath;
-          cout << "new set:";
-          holdPath.dumpSet(); 
-          cout << "with val " << returnedVal << endl; 
           curWeight = hold.pathWeight;
           minVal = returnedVal;
         }
         else if(returnedVal < minVal)
         {
-          cout << returnedVal << " is smaller than " << minVal << endl;
+          path.clearOrderedSet();
           curWeight = hold.pathWeight;
           holdPath = tempPath;
           minVal = returnedVal;
         }
       }
-      cout << hold.vertexLetter << endl;
     }
-    if(minVal > 0){
-    cout << "adding ";
-    holdPath.dumpSet(); 
-    cout << " to ";
-    path.dumpSet(); 
-            path += holdPath;
-//INCORRECT: how do I add in the current weight?
-        return minVal + curWeight;
-}
+    if(minVal > 0)
+    {
+      while(path.peekAtEndItem( temp ) && temp != startVertex){
+        path.removeEndItem( temp );
+      }
+
+      path += startVertex;
+      path += holdPath;
+      return minVal + curWeight;
+    }
+
     //case of nothing found here
     path.removeEndItem( temp );
-    cout << "removed " << temp << endl;
     graph.setVertexState( startVertex, false );
     return 0; // temporary stub return
    }
