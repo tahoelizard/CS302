@@ -46,6 +46,8 @@ bool getALine( istream &consoleIn, char &vert_1, int &wt, char &vert_2 );
 bool getLine( istream &consoleIn, char *str, int length, char stopChar );
 int findShortestDistanceBFS( GraphClass &graph, OrderedSetClass &path, 
                      char startVertex, char searchVertex, bool verbose );
+int findShortestDistanceBFSHelper( GraphClass &graph, OrderedSetClass &path, 
+                           char startVertex, char searchVertex, bool verbose );
 
 // Main function implementation  //////////////////////////////////////////////
 
@@ -105,7 +107,27 @@ int  main()
 int findShortestDistanceBFS( GraphClass &graph, OrderedSetClass &path, 
                            char startVertex, char searchVertex, bool verbose )
    {
-    PathType hold;
+    return findShortestDistanceBFSHelper(graph, path, startVertex, searchVertex, verbose);
+   }
+
+   /**
+ * @brief Finds shortest route between given vertices, 
+ *        using breadth-first search     
+ *
+ * @details None
+ *          
+ * @param in: loaded graph
+ * @param out: found solution path
+ * @param in: start vertex
+ * @param in: search vertex
+ * @param in: verbose setting
+ *
+ * @note Initializes search, then calls and uses a helper function
+ */
+int findShortestDistanceBFSHelper( GraphClass &graph, OrderedSetClass &path, 
+                           char startVertex, char searchVertex, bool verbose )
+   {
+        PathType hold;
     char temp;
     int index = 0;
     int returnedVal = 0;
@@ -130,7 +152,7 @@ int findShortestDistanceBFS( GraphClass &graph, OrderedSetClass &path,
 
     while(graph.getNextVertex( startVertex, index, hold ))
     {
-      returnedVal = findShortestDistanceBFS(graph, tempPath, hold.vertexLetter, searchVertex, verbose);
+      returnedVal = findShortestDistanceBFSHelper(graph, tempPath, hold.vertexLetter, searchVertex, verbose);
       if( returnedVal > 0)
       {
         if(minVal == 0)
@@ -162,7 +184,7 @@ int findShortestDistanceBFS( GraphClass &graph, OrderedSetClass &path,
     //case of nothing found here
     path.removeEndItem( temp );
     graph.setVertexState( startVertex, false );
-    return 0; // temporary stub return
+    return 0; 
    }
 
 
@@ -205,6 +227,7 @@ bool getALine( istream &consoleIn, char &vert_1, int &wt, char &vert_2 )
 
     return true;
    }
+
 
 /**
  * @brief Gets a line of text from an input stream     
